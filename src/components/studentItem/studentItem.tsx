@@ -11,8 +11,11 @@ interface StudentItemProps {
 const StudentItem = (props: StudentItemProps) => {
   return (
     <div key={props.student.id} className={classes.student}>
-      {props.student.first_name} {props.student.last_name} {props.student.email}
-      {props.student.date_started}{' '}
+      <span className={classes.studentText}>
+        {props.student.first_name} {props.student.last_name}{' '}
+        {props.student.email}
+        {props.student.date_started}{' '}
+      </span>
       <button
         className={`btn btn-primary ${classes.studentButton}`}
         data-bs-toggle="modal"

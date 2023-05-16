@@ -227,17 +227,6 @@ const Todos = (props: StudentsProps) => {
   return (
     <>
       <div className={classes.studentContainer}>
-        <button
-          className="btn btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#studentModal"
-          onClick={() => {
-            setModalChild(addForm);
-          }}
-        >
-          +
-        </button>
-        <h1>Students</h1>{' '}
         <div className={classes.studentList}>{studentsListDisplay}</div>
         <Modal id="studentModal" child={modalChild} />
       </div>

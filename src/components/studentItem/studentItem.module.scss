@@ -1,7 +1,22 @@
 .student {
   display: flex;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  padding: 8px;
+  width: 100%;
+
+  .studentText {
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+  }
   .studentButton {
     margin-left: 10px;
+    width: 150px;
   }
+}
+.student:nth-child(even) {
+  background-color: #ccc;
+}
+.student:nth-child(odd) {
+  background-color: #ddd;
 }
