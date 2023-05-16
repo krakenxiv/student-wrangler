@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, ReactNode } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
 import {
@@ -9,7 +9,8 @@ import {
   //   updateSortOrder,
   //   updateOrderByAsc,
 } from '../../redux/slices/studentsSlice';
-// import Modal from '../modal/modal';
+import Modal from '../modal/modal';
+import StudentItem from '../studentItem/studentItem';
 import Student from '../../models/student';
 import AddStudentForm from '../addStudentForm/addStudentForm';
 import UpdateStudentForm from '../updateStudentForm/updateStudentForm';
@@ -29,6 +30,7 @@ const Todos = (props: StudentsProps) => {
   const [previousLastName, setPreviousLastName] = useState<string>('');
   const [previousEmail, setPreviousEmail] = useState<string | null>(null);
   const [previousDateStarted, setPreviousDateStarted] = useState<string>('');
+  const [modalChild, setModalChild] = useState<ReactNode>(null);
 
   let firstNameError = '';
   let lastNameError = '';
@@ -85,18 +87,25 @@ const Todos = (props: StudentsProps) => {
   };
 
   const handleUpdateStudent = (
-    first_name: string,
-    last_name: string,
-    email: string | null,
-    date_started: string
+    // first_name: string,
+    // last_name: string,
+    // email: string | null,
+    // date_started: string
+    student: Student
   ) => {
-    console.log('handleUpdateStudent ' + first_name);
-    if (submissionContainsErrors(first_name, last_name, email) === false) {
+    console.log('handleUpdateStudent ' + student.first_name);
+    if (
+      submissionContainsErrors(
+        student.first_name,
+        student.last_name,
+        student.email
+      ) === false
+    ) {
       let updatedStudent = {
         id: editId,
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
+        first_name: student.first_name,
+        last_name: student.last_name,
+        email: student.email,
         date_started: '2022-03-12 10:45:11',
       };
       dispatch(updateStudent(updatedStudent));
@@ -118,23 +127,22 @@ const Todos = (props: StudentsProps) => {
     last_name: string,
     email: string | null
   ) => {
-    if (first_name === '') {
-      firstNameError += `First Name cannot be blank.\n`;
-    }
-    if (last_name === '') {
-      lastNameError += `Last Name cannot be blank.\n`;
-    }
-    if (first_name.length > 50) {
-      firstNameError += `First Name cannot be more than 50 characters.`;
-    }
-    if (last_name.length > 50) {
-      lastNameError += `Last Name cannot be more than 50 characters.`;
-    }
-    if (email !== null && email.length > 150) {
-      emailError += `Email cannot be more than 150 characters.`;
-    }
+    // if (first_name === '') {
+    //   firstNameError += `First Name cannot be blank.\n`;
+    // }
+    // if (last_name === '') {
+    //   lastNameError += `Last Name cannot be blank.\n`;
+    // }
+    // if (first_name.length > 50) {
+    //   firstNameError += `First Name cannot be more than 50 characters.`;
+    // }
+    // if (last_name.length > 50) {
+    //   lastNameError += `Last Name cannot be more than 50 characters.`;
+    // }
+    // if (email !== null && email.length > 150) {
+    //   emailError += `Email cannot be more than 150 characters.`;
+    // }
     if (firstNameError === '' && lastNameError === '' && emailError === '') {
-      console.log('no errors');
       return false;
     } else {
       // props.toastHandler(firstNameError + ' ' + lastNameError + emailError);
@@ -151,6 +159,40 @@ const Todos = (props: StudentsProps) => {
 
   let studentsListDisplay;
 
+  const editForm = (
+    <UpdateStudentForm
+      previousFirstName={previousFirstName}
+      previousLastName={previousLastName}
+      previousEmail={previousEmail}
+      previousDateStarted={previousDateStarted}
+      updateStudent={(
+        // first_name: string,
+        // last_name: string,
+        // email: string | null,
+        // date_started: string
+        student: Student
+      ) => {
+        handleUpdateStudent(student);
+      }}
+    />
+  );
+
+  const addForm = (
+    <AddStudentForm
+      handleAddNewStudent={(
+        first_name: string,
+        last_name: string,
+        email: string
+      ) => {
+        handleAddNewStudent(first_name, last_name, email);
+      }}
+    />
+  );
+
+  const showAddModal = () => {
+    setModalChild(addForm);
+  };
+
   if (getAllStudentsStatus === 'loading') {
     studentsListDisplay = (
       <div className={classes.loader}>
@@ -163,33 +205,16 @@ const Todos = (props: StudentsProps) => {
     studentsListDisplay = studentsList.map((student: Student) => {
       if (student && student.id) {
         return (
-          <div key={student.id}>
-            {student.first_name} {student.last_name} {student.email}{' '}
-            {student.date_started}{' '}
-            <button
-              onClick={() => {
-                handleEditStudent(student);
-              }}
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => {
-                handleRemoveStudent(student);
-              }}
-            >
-              Delete
-            </button>
-          </div>
-          //   <TodoItem
-          //     todo={todo}
-          //     editHandler={() => handleEditTodo(todo)}
-          //     deleteHandler={() => handleRemoveTodo(todo)}
-          //     checkHandler={() => {
-          //       handleCheckTodo(todo);
-          //     }}
-          //     key={todo.id}
-          //   />
+          <StudentItem
+            student={student}
+            editHandler={() => {
+              setModalChild(editForm);
+              handleUpdateStudent(student);
+            }}
+            deleteHandler={() => {
+              handleRemoveStudent(student);
+            }}
+          />
         );
       } else {
         return null;
@@ -202,41 +227,19 @@ const Todos = (props: StudentsProps) => {
   return (
     <>
       <div className={classes.studentContainer}>
-        {/* <Header
-          handleSortChange={(e: Event) => {
-            sortByHandler(e);
+        <button
+          className="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#studentModal"
+          onClick={() => {
+            setModalChild(addForm);
           }}
-          handleOrderbyChange={(e: Event) => {
-            orderByAscHandler(e);
-          }}
-        /> */}
+        >
+          +
+        </button>
         <h1>Students</h1>{' '}
         <div className={classes.studentList}>{studentsListDisplay}</div>
-        <hr />
-        <AddStudentForm
-          handleAddNewStudent={(
-            first_name: string,
-            last_name: string,
-            email: string
-          ) => {
-            handleAddNewStudent(first_name, last_name, email);
-          }}
-        />
-        <hr />
-        <UpdateStudentForm
-          previousFirstName={previousFirstName}
-          previousLastName={previousLastName}
-          previousEmail={previousEmail}
-          previousDateStarted={previousDateStarted}
-          handleUpdateStudent={(
-            first_name: string,
-            last_name: string,
-            email: string | null,
-            date_started: string
-          ) => {
-            handleUpdateStudent(first_name, last_name, email, date_started);
-          }}
-        />
+        <Modal id="studentModal" child={modalChild} />
       </div>
     </>
   );

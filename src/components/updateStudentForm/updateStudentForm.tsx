@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import classes from './updateStudentForm.module.scss';
 
 interface UpdateStudentFormProps {
-  handleUpdateStudent: Function;
+  updateStudent: Function;
   previousFirstName: string;
   previousLastName: string;
   previousEmail: string | null;
@@ -23,7 +23,6 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
   const [dateStartedFocus, setDateStartedFocus] = useState(false);
 
   const handleFirstNameChange = (event: any) => {
-    console.log(event.target.value);
     setFirstNameValue(event.target.value);
   };
 
@@ -142,11 +141,7 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
         <button
           onClick={() => {
             resetValues();
-            props.handleUpdateStudent(
-              firstNameValue,
-              lastNameValue,
-              emailValue
-            );
+            props.updateStudent(firstNameValue, lastNameValue, emailValue);
           }}
           type="button"
           className="btn btn-primary"

@@ -2,7 +2,6 @@ import Student from '../models/student';
 import axios from 'axios';
 
 const getAllStudents = async () => {
-  console.log('getAllStudents');
   const students = await axios.get(
     `${process.env.REACT_APP_CYCLIC_HOST}/students`
   );
@@ -10,14 +9,24 @@ const getAllStudents = async () => {
 };
 
 const createStudent = async (student: Student) => {
-  return await axios.post(
-    `${process.env.REACT_APP_CYCLIC_HOST}/students`,
-    student
-  );
+  try {
+    return await axios.post(
+      `${process.env.REACT_APP_CYCLIC_HOST}/students`,
+      student
+    );
+  } catch (error: any) {
+    console.log(error.response.data);
+    throw new Error('Unable to establish a login session.');
+    // console.log(error.response.data.error);
+  }
+  // const createStudentRequest = await axios.post(
+  //   `${process.env.REACT_APP_CYCLIC_HOST}/students`,
+  //   student
+  // );
+  // return createStudentRequest;
 };
 
 const updateStudent = async (student: Student) => {
-  console.log(student);
   return await axios.put(
     `${process.env.REACT_APP_CYCLIC_HOST}/students`,
     student

@@ -123,6 +123,8 @@ const studentsSlice = createSlice({
     });
     builder.addCase(addNewStudent.fulfilled, (state, action) => {
       state.createStudentStatus = 'succeeded';
+      console.log(action);
+      console.log(action.type);
       state.students.push(action.payload);
       // state.students = arraySort(state.todos, state.sortBy, state.orderByAsc);
     });
