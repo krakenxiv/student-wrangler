@@ -1,21 +1,14 @@
 import React, { useRef, useState } from 'react';
 import classes from './header.module.scss';
 
-interface HeaderProps {
-  addStudentHandler: Function;
-}
-
-const Header = (props: HeaderProps) => {
+const Header = () => {
   return (
     <header className={classes.header}>
       <h1>Student Wrangler</h1>
       <button
-        className="btn btn-primary"
+        className={`btn btn-primary ${classes.addButton}`}
         data-bs-toggle="modal"
-        data-bs-target="#studentModal"
-        onClick={() => {
-          props.addStudentHandler();
-        }}
+        data-bs-target="#addStudentModal"
       >
         +
       </button>

@@ -28,9 +28,8 @@ const Todos = (props: StudentsProps) => {
   const [editId, setEditId] = useState<string | null | undefined>('');
   const [previousFirstName, setPreviousFirstName] = useState<string>('');
   const [previousLastName, setPreviousLastName] = useState<string>('');
-  const [previousEmail, setPreviousEmail] = useState<string | null>(null);
+  const [previousEmail, setPreviousEmail] = useState<string>('');
   const [previousDateStarted, setPreviousDateStarted] = useState<string>('');
-  const [modalChild, setModalChild] = useState<ReactNode>(null);
 
   let firstNameError = '';
   let lastNameError = '';
@@ -53,15 +52,14 @@ const Todos = (props: StudentsProps) => {
   });
 
   const handleAddNewStudent = (
-    firstName: string,
-    lastName: string,
+    first_name: string,
+    last_name: string,
     email: string
   ) => {
-    console.log('handleAddNewStudent', firstName, lastName, email);
-    if (submissionContainsErrors(firstName, lastName, email) === false) {
+    if (submissionContainsErrors(first_name, last_name, email) === false) {
       let newStudent = {
-        first_name: firstName,
-        last_name: lastName,
+        first_name: first_name,
+        last_name: last_name,
         email: email,
         date_started: '2020-02-12 009:45:11',
       };
@@ -71,34 +69,21 @@ const Todos = (props: StudentsProps) => {
     }
   };
 
-  const resetValues = () => {
-    setPreviousFirstName('');
-    setPreviousLastName('');
-    setPreviousEmail('');
-    setPreviousDateStarted('');
-  };
-
   const handleEditStudent = (student: Student) => {
     setPreviousFirstName(student.first_name);
     setPreviousLastName(student.last_name);
-    setPreviousEmail(student.email);
+    setPreviousEmail(student.email === undefined ? '' : student.email);
     setPreviousDateStarted(student.date_started);
     setEditId(student.id);
   };
 
-  const handleUpdateStudent = (
-    // first_name: string,
-    // last_name: string,
-    // email: string | null,
-    // date_started: string
-    student: Student
-  ) => {
-    console.log('handleUpdateStudent ' + student.first_name);
+  const handleUpdateStudent = (student: Student) => {
+    const emailValue = student.email === undefined ? '' : student.email;
     if (
       submissionContainsErrors(
         student.first_name,
         student.last_name,
-        student.email
+        emailValue
       ) === false
     ) {
       let updatedStudent = {
@@ -127,21 +112,21 @@ const Todos = (props: StudentsProps) => {
     last_name: string,
     email: string | null
   ) => {
-    // if (first_name === '') {
-    //   firstNameError += `First Name cannot be blank.\n`;
-    // }
-    // if (last_name === '') {
-    //   lastNameError += `Last Name cannot be blank.\n`;
-    // }
-    // if (first_name.length > 50) {
-    //   firstNameError += `First Name cannot be more than 50 characters.`;
-    // }
-    // if (last_name.length > 50) {
-    //   lastNameError += `Last Name cannot be more than 50 characters.`;
-    // }
-    // if (email !== null && email.length > 150) {
-    //   emailError += `Email cannot be more than 150 characters.`;
-    // }
+    if (first_name === '') {
+      firstNameError += `First Name cannot be blank.\n`;
+    }
+    if (last_name === '') {
+      lastNameError += `Last Name cannot be blank.\n`;
+    }
+    if (first_name.length > 50) {
+      firstNameError += `First Name cannot be more than 50 characters.`;
+    }
+    if (last_name.length > 50) {
+      lastNameError += `Last Name cannot be more than 50 characters.`;
+    }
+    if (email !== null && email.length > 150) {
+      emailError += `Email cannot be more than 150 characters.`;
+    }
     if (firstNameError === '' && lastNameError === '' && emailError === '') {
       return false;
     } else {
@@ -165,13 +150,7 @@ const Todos = (props: StudentsProps) => {
       previousLastName={previousLastName}
       previousEmail={previousEmail}
       previousDateStarted={previousDateStarted}
-      updateStudent={(
-        // first_name: string,
-        // last_name: string,
-        // email: string | null,
-        // date_started: string
-        student: Student
-      ) => {
+      updateStudent={(student: Student) => {
         handleUpdateStudent(student);
       }}
     />
@@ -189,10 +168,6 @@ const Todos = (props: StudentsProps) => {
     />
   );
 
-  const showAddModal = () => {
-    setModalChild(addForm);
-  };
-
   if (getAllStudentsStatus === 'loading') {
     studentsListDisplay = (
       <div className={classes.loader}>
@@ -207,9 +182,9 @@ const Todos = (props: StudentsProps) => {
         return (
           <StudentItem
             student={student}
+            key={student.id}
             editHandler={() => {
-              setModalChild(editForm);
-              handleUpdateStudent(student);
+              handleEditStudent(student);
             }}
             deleteHandler={() => {
               handleRemoveStudent(student);
@@ -228,7 +203,12 @@ const Todos = (props: StudentsProps) => {
     <>
       <div className={classes.studentContainer}>
         <div className={classes.studentList}>{studentsListDisplay}</div>
-        <Modal id="studentModal" child={modalChild} />
+        <Modal id="addStudentModal" child={addForm} title="Add New Student" />
+        <Modal
+          id="updateStudentModal"
+          child={editForm}
+          title="Update Student"
+        />
       </div>
     </>
   );

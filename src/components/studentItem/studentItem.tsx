@@ -12,14 +12,14 @@ const StudentItem = (props: StudentItemProps) => {
   return (
     <div key={props.student.id} className={classes.student}>
       <span className={classes.studentText}>
-        {props.student.first_name} {props.student.last_name}{' '}
-        {props.student.email}
-        {props.student.date_started}{' '}
+        {props.student.first_name} {props.student.last_name}
       </span>
+      <span className={classes.studentText}>{props.student.email}</span>
+      <span className={classes.studentText}>{props.student.date_started}</span>
       <button
         className={`btn btn-primary ${classes.studentButton}`}
         data-bs-toggle="modal"
-        data-bs-target="#studentModal"
+        data-bs-target="#updateStudentModal"
         onClick={() => {
           props.editHandler();
         }}

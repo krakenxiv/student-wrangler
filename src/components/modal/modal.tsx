@@ -4,6 +4,7 @@ import classes from './modal.module.scss';
 interface ModalProps {
   child: ReactNode;
   id: string;
+  title: string;
 }
 
 const Modal = (props: ModalProps) => {
@@ -17,7 +18,7 @@ const Modal = (props: ModalProps) => {
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">{props.id}</h5>
+            <h5 className="modal-title">{props.title}</h5>
             <button
               type="button"
               className="btn-close"
