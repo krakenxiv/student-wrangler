@@ -117,9 +117,13 @@ const studentsSlice = createSlice({
     });
     builder.addCase(fetchAllStudents.fulfilled, (state, action) => {
       state.getAllStudentsStatus = 'succeeded';
-      //   state.todos = arraySort(action.payload, state.sortBy, state.orderByAsc);
-      state.students = action.payload;
-      // state.todos = arraySort([], state.sortBy, state.orderByAsc);
+      state.students = arraySort(
+        action.payload,
+        state.sortBy,
+        state.orderByAsc
+      );
+      // state.students = action.payload;
+      // state.students = arraySort([], state.sortBy, state.orderByAsc);
     });
     builder.addCase(fetchAllStudents.rejected, (state, action) => {
       state.getAllStudentsStatus = 'failed';
@@ -131,10 +135,12 @@ const studentsSlice = createSlice({
     });
     builder.addCase(addNewStudent.fulfilled, (state, action) => {
       state.createStudentStatus = 'succeeded';
-      console.log(action);
-      console.log(action.type);
-      state.students.push(action.payload);
-      // state.students = arraySort(state.todos, state.sortBy, state.orderByAsc);
+      // state.students.push(action.payload);
+      state.students = arraySort(
+        state.students,
+        state.sortBy,
+        state.orderByAsc
+      );
     });
     builder.addCase(addNewStudent.rejected, (state, action) => {
       state.createStudentStatus = 'failed';
