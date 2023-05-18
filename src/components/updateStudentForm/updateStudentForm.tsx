@@ -6,20 +6,36 @@ interface UpdateStudentFormProps {
   previousFirstName: string;
   previousLastName: string;
   previousEmail: string | null;
-  previousDateStarted: Date;
+  previousDateStarted: string;
 }
 
 const UpdateStudentForm = (props: UpdateStudentFormProps) => {
+  const convertDateTimeDisplay = (str: any) => {
+    let newStr = str.toString().replace(/T/g, ' ');
+    newStr = newStr.replace(/Z/g, '');
+    return newStr;
+  };
+
   const [firstNameValue, setFirstNameValue] = useState<string>('');
   const [lastNameValue, setLastNameValue] = useState<string>('');
   const [emailValue, setEmailValue] = useState<string>('');
-  const [dateStartedValue, setDateStartedValue] = useState<Date>(new Date());
+  const [dateStartedValue, setDateStartedValue] = useState<string>('');
 
   const resetValues = () => {
     setFirstNameValue('');
     setLastNameValue('');
     setEmailValue('');
-    setDateStartedValue(new Date());
+    setDateStartedValue('');
+  };
+
+  const updateDate = (date: string): void => {
+    setDateStartedValue(convertDateTimeDisplay(date));
+  };
+
+  const convertDateTimeDisplayRemoveTime = (date: string): string => {
+    let text = date;
+    let result = text.substr(0, 10);
+    return result;
   };
 
   return (
@@ -58,6 +74,24 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
           placeholder={props.previousEmail ? props.previousEmail : ''}
         />
       </div>
+
+      <div className="input-group mb-3">
+        <label className="input-group-text">Date Started</label>
+        <input
+          className="form-control"
+          type="date"
+          id="start"
+          name="trip-start"
+          onChange={(event) => {
+            updateDate(event.target.value);
+          }}
+          value={
+            dateStartedValue
+              ? dateStartedValue
+              : convertDateTimeDisplayRemoveTime(props.previousDateStarted)
+          }
+        />
+      </div>
       <div>
         <button
           type="button"
@@ -70,6 +104,9 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
                 : props.previousFirstName,
               last_name: lastNameValue ? lastNameValue : props.previousLastName,
               email: emailValue ? emailValue : props.previousEmail,
+              date_started: dateStartedValue
+                ? dateStartedValue
+                : props.previousDateStarted,
             });
             resetValues();
           }}

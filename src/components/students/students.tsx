@@ -29,9 +29,10 @@ const Todos = (props: StudentsProps) => {
   const [previousFirstName, setPreviousFirstName] = useState<string>('');
   const [previousLastName, setPreviousLastName] = useState<string>('');
   const [previousEmail, setPreviousEmail] = useState<string>('');
-  const [previousDateStarted, setPreviousDateStarted] = useState<Date>(
-    new Date()
-  );
+  // const [previousDateStarted, setPreviousDateStarted] = useState<Date>(
+  //   new Date()
+  // );
+  const [previousDateStarted, setPreviousDateStarted] = useState<string>('');
 
   let firstNameError = '';
   let lastNameError = '';
@@ -57,14 +58,14 @@ const Todos = (props: StudentsProps) => {
     first_name: string,
     last_name: string,
     email: string,
-    date_started: Date
+    date_started: string
   ) => {
     if (submissionContainsErrors(first_name, last_name, email) === false) {
       let newStudent = {
         first_name: first_name,
         last_name: last_name,
         email: email,
-        date_started: new Date(),
+        date_started: date_started,
       };
       dispatch(addNewStudent(newStudent));
     } else {
@@ -94,7 +95,7 @@ const Todos = (props: StudentsProps) => {
         first_name: student.first_name,
         last_name: student.last_name,
         email: student.email,
-        date_started: new Date(),
+        date_started: student.date_started,
       };
       dispatch(updateStudent(updatedStudent));
     } else {
@@ -104,11 +105,6 @@ const Todos = (props: StudentsProps) => {
 
   const handleRemoveStudent = (student: Student) => {
     dispatch(deleteStudent(student));
-  };
-
-  const handleUpdateDate = (event: any) => {
-    console.log(event.target.value);
-    setPreviousDateStarted(event.target.value);
   };
 
   const submissionContainsErrors = (
@@ -177,9 +173,10 @@ const Todos = (props: StudentsProps) => {
       handleAddNewStudent={(
         first_name: string,
         last_name: string,
-        email: string
+        email: string,
+        date_started: string
       ) => {
-        handleAddNewStudent(first_name, last_name, email, new Date());
+        handleAddNewStudent(first_name, last_name, email, date_started);
       }}
     />
   );
@@ -217,12 +214,6 @@ const Todos = (props: StudentsProps) => {
 
   return (
     <>
-      <input
-        type="datetime-local"
-        onChange={(e) => {
-          handleUpdateDate(e);
-        }}
-      />
       <div className={classes.studentContainer}>
         <SortBar
           // @ts-ignore

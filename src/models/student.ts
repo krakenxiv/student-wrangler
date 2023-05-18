@@ -3,7 +3,8 @@ export default interface Student {
   first_name: string;
   last_name: string;
   email?: string;
-  date_started: Date;
+  // date_started: Date;
+  date_started: string;
 }
 
 export interface StudentsState {

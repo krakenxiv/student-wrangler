@@ -9,11 +9,13 @@ const AddStudentForm = (props: AddStudentFormProps) => {
   const [firstNameValue, setFirstNameValue] = useState('');
   const [lastNameValue, setLastNameValue] = useState('');
   const [emailValue, setEmailValue] = useState('');
+  const [dateStartedValue, setDateStartedValue] = useState('');
 
-  const resetValues = async () => {
+  const resetValues = () => {
     setFirstNameValue('');
     setLastNameValue('');
     setEmailValue('');
+    setDateStartedValue('');
   };
 
   return (
@@ -48,13 +50,28 @@ const AddStudentForm = (props: AddStudentFormProps) => {
           value={emailValue}
         />
       </div>
+
+      <div className="input-group mb-3">
+        <label className="input-group-text">Date Started</label>
+        <input
+          className="form-control"
+          type="date"
+          id="start"
+          name="trip-start"
+          onChange={(e) => {
+            setDateStartedValue(e.target.value);
+          }}
+        />
+      </div>
+
       <div>
         <button
           onClick={() => {
             props.handleAddNewStudent(
               firstNameValue,
               lastNameValue,
-              emailValue
+              emailValue,
+              dateStartedValue
             );
             resetValues();
           }}
