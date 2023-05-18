@@ -17,6 +17,7 @@ const StudentItem = (props: StudentItemProps) => {
       <span className={classes.studentText}>{props.student.email}</span>
       <span className={classes.studentText}>
         {props.student.date_started.toString()}
+        {/* {props.student.date_started.toLocaleDateString('en-US')} */}
       </span>
       <button
         className={`btn btn-primary ${classes.studentButton}`}

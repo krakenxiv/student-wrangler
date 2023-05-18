@@ -221,9 +221,14 @@ const Todos = (props: StudentsProps) => {
 
   return (
     <>
+      <input
+        type="datetime-local"
+        onChange={(e) => {
+          handleUpdateDate(e);
+        }}
+      />
       <div className={classes.studentContainer}>
         <SortBar
-          updateDate={handleUpdateDate}
           // @ts-ignore
           handleSortChange={(e: Event) => {
             sortByHandler(e);
@@ -233,7 +238,6 @@ const Todos = (props: StudentsProps) => {
             orderByAscHandler(e);
           }}
         />
-            
         <div className={classes.studentList}>{studentsListDisplay}</div>
         <Modal id="addStudentModal" child={addForm} title="Add New Student" />
         <Modal

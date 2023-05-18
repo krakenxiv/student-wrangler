@@ -11,7 +11,7 @@ export const arraySort = (
   orderByAsc: boolean
 ) => {
   let sortedArray = [...arrayToSort];
-  if (sortBy === 'first_name' || sortBy === 'last_name') {
+  if (sortBy === 'first_name' || sortBy === 'last_name' || 'email') {
     return sortByString(sortedArray, sortBy, orderByAsc);
   } else {
     return sortNumerically(sortedArray, sortBy, orderByAsc);
@@ -31,9 +31,13 @@ const sortByString = (
       valueCompare1 = student1.last_name.toLowerCase();
       valueCompare2 = student2.last_name.toLowerCase();
     }
-    if (sortBy === 'email' && student1.email && student2.email) {
-      valueCompare1 = student1.email.toLowerCase();
-      valueCompare2 = student2.email.toLowerCase();
+    if (sortBy === 'email') {
+      let updatedEmail1 = student1.email ? student1.email : '';
+      let updatedEmail2 = student2.email ? student2.email : '';
+      if (student1.email && student2.email) {
+        valueCompare1 = updatedEmail1.toLowerCase();
+        valueCompare2 = updatedEmail2.toLowerCase();
+      }
     }
     if (valueCompare1 < valueCompare2) {
       return orderByAsc ? -1 : 1;

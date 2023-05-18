@@ -1,10 +1,58 @@
+@import '../../scss/global/global';
 .sortBar {
-  background-color: #777;
+  background-color: #444;
+  border-radius: 10px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  margin: 10px 0;
+  padding: 10px 0;
 
-  .sortRow {
+  .selectLabel {
+    color: #fff;
+  }
+
+  .sortBy {
+    align-items: center;
     display: flex;
-    flex-direction: row;
+    margin: 0 10px;
+
+    select {
+      flex-wrap: nowrap;
+      flex: 1 1 0;
+      margin-left: 10px;
+    }
+  }
+  .orderBy {
+    align-items: center;
+    display: flex;
+    margin: 0 10px;
+
+    select {
+      flex-wrap: nowrap;
+      flex: 1 1 0;
+      margin-left: 10px;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .sortBar {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+
+    .sortBy {
+      margin-bottom: 10px;
+      label {
+        flex-basis: 80px;
+      }
+    }
+    .orderBy {
+      label {
+        flex-basis: 80px;
+      }
+    }
   }
 }

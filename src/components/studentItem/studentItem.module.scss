@@ -20,3 +20,11 @@
 .student:nth-child(odd) {
   background-color: #ddd;
 }
+.student:first-of-type {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.student:last-of-type {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
