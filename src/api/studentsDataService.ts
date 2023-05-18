@@ -9,6 +9,7 @@ const getAllStudents = async () => {
 };
 
 const createStudent = async (student: Student) => {
+  console.log(student);
   try {
     return await axios.post(
       `${process.env.REACT_APP_CYCLIC_HOST}/students`,

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import classes from './updateStudentForm.module.scss';
 
 interface UpdateStudentFormProps {
@@ -6,20 +6,20 @@ interface UpdateStudentFormProps {
   previousFirstName: string;
   previousLastName: string;
   previousEmail: string | null;
-  previousDateStarted: string;
+  previousDateStarted: Date;
 }
 
 const UpdateStudentForm = (props: UpdateStudentFormProps) => {
-  const [firstNameValue, setFirstNameValue] = useState('');
-  const [lastNameValue, setLastNameValue] = useState('');
-  const [emailValue, setEmailValue] = useState('');
-  const [dateStartedValue, setDateStartedValue] = useState('');
+  const [firstNameValue, setFirstNameValue] = useState<string>('');
+  const [lastNameValue, setLastNameValue] = useState<string>('');
+  const [emailValue, setEmailValue] = useState<string>('');
+  const [dateStartedValue, setDateStartedValue] = useState<Date>(new Date());
 
   const resetValues = () => {
     setFirstNameValue('');
     setLastNameValue('');
     setEmailValue('');
-    setDateStartedValue('');
+    setDateStartedValue(new Date());
   };
 
   return (

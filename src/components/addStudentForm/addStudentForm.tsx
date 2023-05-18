@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import classes from './addStudentForm.module.scss';
 
 interface AddStudentFormProps {
@@ -24,7 +24,6 @@ const AddStudentForm = (props: AddStudentFormProps) => {
           className="form-control"
           onChange={(event) => {
             setFirstNameValue(event.target.value);
-            console.log(event.target.value);
           }}
           value={firstNameValue}
         />

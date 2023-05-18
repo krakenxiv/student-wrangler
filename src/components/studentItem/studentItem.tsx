@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import classes from './studentItem.module.scss';
 import Student from '../../models/student';
 
@@ -15,7 +15,9 @@ const StudentItem = (props: StudentItemProps) => {
         {props.student.first_name} {props.student.last_name}
       </span>
       <span className={classes.studentText}>{props.student.email}</span>
-      <span className={classes.studentText}>{props.student.date_started}</span>
+      <span className={classes.studentText}>
+        {props.student.date_started.toString()}
+      </span>
       <button
         className={`btn btn-primary ${classes.studentButton}`}
         data-bs-toggle="modal"

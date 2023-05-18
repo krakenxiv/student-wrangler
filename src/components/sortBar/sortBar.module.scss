@@ -1,0 +1,10 @@
+.sortBar {
+  background-color: #777;
+  display: flex;
+  flex-direction: row;
+
+  .sortRow {
+    display: flex;
+    flex-direction: row;
+  }
+}

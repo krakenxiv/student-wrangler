@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, ReactNode } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
 import {
@@ -6,15 +6,15 @@ import {
   addNewStudent,
   updateStudent,
   deleteStudent,
-  //   updateSortOrder,
-  //   updateOrderByAsc,
+  updateSortOrder,
+  updateOrderByAsc,
 } from '../../redux/slices/studentsSlice';
 import Modal from '../modal/modal';
+import SortBar from '../sortBar/sortBar';
 import StudentItem from '../studentItem/studentItem';
 import Student from '../../models/student';
 import AddStudentForm from '../addStudentForm/addStudentForm';
 import UpdateStudentForm from '../updateStudentForm/updateStudentForm';
-// import Header from '../header/header';
 import classes from './students.module.scss';
 // TODO install bootstrap npm OR create custom global css vars
 // TODO write basic tests
@@ -29,7 +29,9 @@ const Todos = (props: StudentsProps) => {
   const [previousFirstName, setPreviousFirstName] = useState<string>('');
   const [previousLastName, setPreviousLastName] = useState<string>('');
   const [previousEmail, setPreviousEmail] = useState<string>('');
-  const [previousDateStarted, setPreviousDateStarted] = useState<string>('');
+  const [previousDateStarted, setPreviousDateStarted] = useState<Date>(
+    new Date()
+  );
 
   let firstNameError = '';
   let lastNameError = '';
@@ -54,14 +56,15 @@ const Todos = (props: StudentsProps) => {
   const handleAddNewStudent = (
     first_name: string,
     last_name: string,
-    email: string
+    email: string,
+    date_started: Date
   ) => {
     if (submissionContainsErrors(first_name, last_name, email) === false) {
       let newStudent = {
         first_name: first_name,
         last_name: last_name,
         email: email,
-        date_started: '2020-02-12 009:45:11',
+        date_started: new Date(),
       };
       dispatch(addNewStudent(newStudent));
     } else {
@@ -91,7 +94,7 @@ const Todos = (props: StudentsProps) => {
         first_name: student.first_name,
         last_name: student.last_name,
         email: student.email,
-        date_started: '2022-03-12 10:45:11',
+        date_started: new Date(),
       };
       dispatch(updateStudent(updatedStudent));
     } else {
@@ -101,6 +104,11 @@ const Todos = (props: StudentsProps) => {
 
   const handleRemoveStudent = (student: Student) => {
     dispatch(deleteStudent(student));
+  };
+
+  const handleUpdateDate = (event: any) => {
+    console.log(event.target.value);
+    setPreviousDateStarted(event.target.value);
   };
 
   //   const orderBy = useSelector((state: any) => {
@@ -136,6 +144,18 @@ const Todos = (props: StudentsProps) => {
     }
   };
 
+  const sortByHandler = (e: any) => {
+    dispatch(updateSortOrder(e.target.value));
+  };
+
+  const orderByAscHandler = (e: any) => {
+    if (e.target.value === 'asc') {
+      dispatch(updateOrderByAsc(true));
+    } else {
+      dispatch(updateOrderByAsc(false));
+    }
+  };
+
   useEffect(() => {
     if (getAllStudentsStatus === 'idle') {
       dispatch(fetchAllStudents());
@@ -163,7 +183,7 @@ const Todos = (props: StudentsProps) => {
         last_name: string,
         email: string
       ) => {
-        handleAddNewStudent(first_name, last_name, email);
+        handleAddNewStudent(first_name, last_name, email, new Date());
       }}
     />
   );
@@ -202,6 +222,18 @@ const Todos = (props: StudentsProps) => {
   return (
     <>
       <div className={classes.studentContainer}>
+        <SortBar
+          updateDate={handleUpdateDate}
+          // @ts-ignore
+          handleSortChange={(e: Event) => {
+            sortByHandler(e);
+          }}
+          // @ts-ignore
+          handleOrderbyChange={(e: Event) => {
+            orderByAscHandler(e);
+          }}
+        />
+            
         <div className={classes.studentList}>{studentsListDisplay}</div>
         <Modal id="addStudentModal" child={addForm} title="Add New Student" />
         <Modal
