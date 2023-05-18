@@ -111,10 +111,6 @@ const Todos = (props: StudentsProps) => {
     setPreviousDateStarted(event.target.value);
   };
 
-  //   const orderBy = useSelector((state: any) => {
-  //     return state.todos.orderByAsc;
-  //   });
-
   const submissionContainsErrors = (
     first_name: string,
     last_name: string,
