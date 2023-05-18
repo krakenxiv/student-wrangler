@@ -2,8 +2,8 @@ export default interface Student {
   id?: string | null | undefined;
   first_name: string;
   last_name: string;
-  email: string | null;
-  date_started: string;
+  email?: string;
+  date_started: Date;
 }
 
 export interface StudentsState {

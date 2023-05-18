@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import StudentsDataService from '../../api/studentsDataService';
 import Student, { StudentsState } from '../../models/student';
-// import { arraySort } from '../../utilities/utilities';
+import { arraySort } from '../../utilities/utilities';
 
 // TODO fix typescript error
 
@@ -93,14 +93,22 @@ const studentsSlice = createSlice({
   name: 'students',
   initialState,
   reducers: {
-    // updateSortOrder(state, action: PayloadAction<string>) {
-    //   state.sortBy = action.payload;
-    //   state.todos = arraySort(state.todos, state.sortBy, state.orderByAsc);
-    // },
-    // updateOrderByAsc(state, action: PayloadAction<boolean>) {
-    //   state.orderByAsc = action.payload;
-    //   state.todos = arraySort(state.todos, state.sortBy, state.orderByAsc);
-    // },
+    updateSortOrder(state, action: PayloadAction<string>) {
+      state.sortBy = action.payload;
+      state.students = arraySort(
+        state.students,
+        state.sortBy,
+        state.orderByAsc
+      );
+    },
+    updateOrderByAsc(state, action: PayloadAction<boolean>) {
+      state.orderByAsc = action.payload;
+      state.students = arraySort(
+        state.students,
+        state.sortBy,
+        state.orderByAsc
+      );
+    },
   },
   extraReducers: (builder) => {
     // fetch todos
@@ -109,9 +117,16 @@ const studentsSlice = createSlice({
     });
     builder.addCase(fetchAllStudents.fulfilled, (state, action) => {
       state.getAllStudentsStatus = 'succeeded';
-      //   state.todos = arraySort(action.payload, state.sortBy, state.orderByAsc);
-      state.students = action.payload;
-      // state.todos = arraySort([], state.sortBy, state.orderByAsc);
+      state.students = arraySort(
+        action.payload,
+        state.sortBy,
+        state.orderByAsc
+      );
+      state.students = arraySort(
+        action.payload,
+        state.sortBy,
+        state.orderByAsc
+      );
     });
     builder.addCase(fetchAllStudents.rejected, (state, action) => {
       state.getAllStudentsStatus = 'failed';
@@ -124,7 +139,11 @@ const studentsSlice = createSlice({
     builder.addCase(addNewStudent.fulfilled, (state, action) => {
       state.createStudentStatus = 'succeeded';
       state.students.push(action.payload);
-      // state.students = arraySort(state.todos, state.sortBy, state.orderByAsc);
+      state.students = arraySort(
+        state.students,
+        state.sortBy,
+        state.orderByAsc
+      );
     });
     builder.addCase(addNewStudent.rejected, (state, action) => {
       state.createStudentStatus = 'failed';
@@ -143,6 +162,11 @@ const studentsSlice = createSlice({
         ...state.students[index],
         ...action.payload,
       };
+      state.students = arraySort(
+        state.students,
+        state.sortBy,
+        state.orderByAsc
+      );
     });
     builder.addCase(updateStudent.rejected, (state, action) => {
       state.updateStudentStatus = 'failed';
@@ -166,5 +190,5 @@ const studentsSlice = createSlice({
 });
 
 export default studentsSlice.reducer;
-// export const { updateSortOrder, updateOrderByAsc } = studentsSlice.actions;
+export const { updateSortOrder, updateOrderByAsc } = studentsSlice.actions;
 export const selectAllTodos = (state: any) => state.students.students;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
 import {
@@ -6,14 +6,15 @@ import {
   addNewStudent,
   updateStudent,
   deleteStudent,
-  //   updateSortOrder,
-  //   updateOrderByAsc,
+  updateSortOrder,
+  updateOrderByAsc,
 } from '../../redux/slices/studentsSlice';
-// import Modal from '../modal/modal';
+import Modal from '../modal/modal';
+import SortBar from '../sortBar/sortBar';
+import StudentItem from '../studentItem/studentItem';
 import Student from '../../models/student';
 import AddStudentForm from '../addStudentForm/addStudentForm';
 import UpdateStudentForm from '../updateStudentForm/updateStudentForm';
-// import Header from '../header/header';
 import classes from './students.module.scss';
 // TODO install bootstrap npm OR create custom global css vars
 // TODO write basic tests
@@ -27,8 +28,10 @@ const Todos = (props: StudentsProps) => {
   const [editId, setEditId] = useState<string | null | undefined>('');
   const [previousFirstName, setPreviousFirstName] = useState<string>('');
   const [previousLastName, setPreviousLastName] = useState<string>('');
-  const [previousEmail, setPreviousEmail] = useState<string | null>(null);
-  const [previousDateStarted, setPreviousDateStarted] = useState<string>('');
+  const [previousEmail, setPreviousEmail] = useState<string>('');
+  const [previousDateStarted, setPreviousDateStarted] = useState<Date>(
+    new Date()
+  );
 
   let firstNameError = '';
   let lastNameError = '';
@@ -51,17 +54,17 @@ const Todos = (props: StudentsProps) => {
   });
 
   const handleAddNewStudent = (
-    firstName: string,
-    lastName: string,
-    email: string
+    first_name: string,
+    last_name: string,
+    email: string,
+    date_started: Date
   ) => {
-    console.log('handleAddNewStudent', firstName, lastName, email);
-    if (submissionContainsErrors(firstName, lastName, email) === false) {
+    if (submissionContainsErrors(first_name, last_name, email) === false) {
       let newStudent = {
-        first_name: firstName,
-        last_name: lastName,
+        first_name: first_name,
+        last_name: last_name,
         email: email,
-        date_started: '2020-02-12 009:45:11',
+        date_started: new Date(),
       };
       dispatch(addNewStudent(newStudent));
     } else {
@@ -69,35 +72,29 @@ const Todos = (props: StudentsProps) => {
     }
   };
 
-  const resetValues = () => {
-    setPreviousFirstName('');
-    setPreviousLastName('');
-    setPreviousEmail('');
-    setPreviousDateStarted('');
-  };
-
   const handleEditStudent = (student: Student) => {
     setPreviousFirstName(student.first_name);
     setPreviousLastName(student.last_name);
-    setPreviousEmail(student.email);
+    setPreviousEmail(student.email === undefined ? '' : student.email);
     setPreviousDateStarted(student.date_started);
     setEditId(student.id);
   };
 
-  const handleUpdateStudent = (
-    first_name: string,
-    last_name: string,
-    email: string | null,
-    date_started: string
-  ) => {
-    console.log('handleUpdateStudent ' + first_name);
-    if (submissionContainsErrors(first_name, last_name, email) === false) {
+  const handleUpdateStudent = (student: Student) => {
+    const emailValue = student.email === undefined ? '' : student.email;
+    if (
+      submissionContainsErrors(
+        student.first_name,
+        student.last_name,
+        emailValue
+      ) === false
+    ) {
       let updatedStudent = {
         id: editId,
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        date_started: '2022-03-12 10:45:11',
+        first_name: student.first_name,
+        last_name: student.last_name,
+        email: student.email,
+        date_started: new Date(),
       };
       dispatch(updateStudent(updatedStudent));
     } else {
@@ -109,9 +106,10 @@ const Todos = (props: StudentsProps) => {
     dispatch(deleteStudent(student));
   };
 
-  //   const orderBy = useSelector((state: any) => {
-  //     return state.todos.orderByAsc;
-  //   });
+  const handleUpdateDate = (event: any) => {
+    console.log(event.target.value);
+    setPreviousDateStarted(event.target.value);
+  };
 
   const submissionContainsErrors = (
     first_name: string,
@@ -134,12 +132,23 @@ const Todos = (props: StudentsProps) => {
       emailError += `Email cannot be more than 150 characters.`;
     }
     if (firstNameError === '' && lastNameError === '' && emailError === '') {
-      console.log('no errors');
       return false;
     } else {
       // props.toastHandler(firstNameError + ' ' + lastNameError + emailError);
       alert(firstNameError + ' ' + lastNameError + ' ' + emailError);
       return true;
+    }
+  };
+
+  const sortByHandler = (e: any) => {
+    dispatch(updateSortOrder(e.target.value));
+  };
+
+  const orderByAscHandler = (e: any) => {
+    if (e.target.value === 'asc') {
+      dispatch(updateOrderByAsc(true));
+    } else {
+      dispatch(updateOrderByAsc(false));
     }
   };
 
@@ -150,6 +159,30 @@ const Todos = (props: StudentsProps) => {
   }, [getAllStudentsStatus, dispatch]);
 
   let studentsListDisplay;
+
+  const editForm = (
+    <UpdateStudentForm
+      previousFirstName={previousFirstName}
+      previousLastName={previousLastName}
+      previousEmail={previousEmail}
+      previousDateStarted={previousDateStarted}
+      updateStudent={(student: Student) => {
+        handleUpdateStudent(student);
+      }}
+    />
+  );
+
+  const addForm = (
+    <AddStudentForm
+      handleAddNewStudent={(
+        first_name: string,
+        last_name: string,
+        email: string
+      ) => {
+        handleAddNewStudent(first_name, last_name, email, new Date());
+      }}
+    />
+  );
 
   if (getAllStudentsStatus === 'loading') {
     studentsListDisplay = (
@@ -163,33 +196,16 @@ const Todos = (props: StudentsProps) => {
     studentsListDisplay = studentsList.map((student: Student) => {
       if (student && student.id) {
         return (
-          <div key={student.id}>
-            {student.first_name} {student.last_name} {student.email}{' '}
-            {student.date_started}{' '}
-            <button
-              onClick={() => {
-                handleEditStudent(student);
-              }}
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => {
-                handleRemoveStudent(student);
-              }}
-            >
-              Delete
-            </button>
-          </div>
-          //   <TodoItem
-          //     todo={todo}
-          //     editHandler={() => handleEditTodo(todo)}
-          //     deleteHandler={() => handleRemoveTodo(todo)}
-          //     checkHandler={() => {
-          //       handleCheckTodo(todo);
-          //     }}
-          //     key={todo.id}
-          //   />
+          <StudentItem
+            student={student}
+            key={student.id}
+            editHandler={() => {
+              handleEditStudent(student);
+            }}
+            deleteHandler={() => {
+              handleRemoveStudent(student);
+            }}
+          />
         );
       } else {
         return null;
@@ -201,41 +217,29 @@ const Todos = (props: StudentsProps) => {
 
   return (
     <>
+      <input
+        type="datetime-local"
+        onChange={(e) => {
+          handleUpdateDate(e);
+        }}
+      />
       <div className={classes.studentContainer}>
-        {/* <Header
+        <SortBar
+          // @ts-ignore
           handleSortChange={(e: Event) => {
             sortByHandler(e);
           }}
+          // @ts-ignore
           handleOrderbyChange={(e: Event) => {
             orderByAscHandler(e);
           }}
-        /> */}
-        <h1>Students</h1>{' '}
-        <div className={classes.studentList}>{studentsListDisplay}</div>
-        <hr />
-        <AddStudentForm
-          handleAddNewStudent={(
-            first_name: string,
-            last_name: string,
-            email: string
-          ) => {
-            handleAddNewStudent(first_name, last_name, email);
-          }}
         />
-        <hr />
-        <UpdateStudentForm
-          previousFirstName={previousFirstName}
-          previousLastName={previousLastName}
-          previousEmail={previousEmail}
-          previousDateStarted={previousDateStarted}
-          handleUpdateStudent={(
-            first_name: string,
-            last_name: string,
-            email: string | null,
-            date_started: string
-          ) => {
-            handleUpdateStudent(first_name, last_name, email, date_started);
-          }}
+        <div className={classes.studentList}>{studentsListDisplay}</div>
+        <Modal id="addStudentModal" child={addForm} title="Add New Student" />
+        <Modal
+          id="updateStudentModal"
+          child={editForm}
+          title="Update Student"
         />
       </div>
     </>

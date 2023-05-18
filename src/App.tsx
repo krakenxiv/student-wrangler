@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { ReactNode, useState } from 'react';
 import Students from './components/students/students';
+import Header from './components/header/header';
 import './App.scss';
 
 function App() {
   return (
-    <div className="App">
+    <div className="app-container">
+      <Header />
       <Students toastHandler={() => {}} />
     </div>
   );

@@ -1,0 +1,30 @@
+.student {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  width: 100%;
+
+  .studentText {
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+  }
+  .studentButton {
+    margin-left: 10px;
+    width: 150px;
+  }
+}
+.student:nth-child(even) {
+  background-color: #ccc;
+}
+.student:nth-child(odd) {
+  background-color: #ddd;
+}
+.student:first-of-type {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.student:last-of-type {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
