@@ -258,7 +258,6 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
           className="btn btn-primary"
           data-bs-dismiss="modal"
           onClick={() => {
-            console.log(activeValue);
             props.updateStudent({
               first_name: firstNameValue
                 ? firstNameValue
