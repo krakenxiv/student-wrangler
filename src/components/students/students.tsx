@@ -12,10 +12,13 @@ import {
 import Modal from '../modal/modal';
 import SortBar from '../sortBar/sortBar';
 import StudentItem from '../studentItem/studentItem';
+import StudentView from '../studentView/studentView';
 import Student from '../../models/student';
 import AddStudentForm from '../addStudentForm/addStudentForm';
 import UpdateStudentForm from '../updateStudentForm/updateStudentForm';
 import classes from './students.module.scss';
+import { submissionContainsErrors } from '../../utilities/utilities';
+
 // TODO install bootstrap npm OR create custom global css vars
 // TODO write basic tests
 // TODO stack selects when page is mobile
@@ -23,14 +26,10 @@ interface StudentsProps {
   toastHandler: Function;
 }
 
-/*
-TODO!!!!!
-Why isn't add student form resetting?
-*/
-
 const Todos = (props: StudentsProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [editId, setEditId] = useState<string | null | undefined>('');
+  const [currentStudent, setCurrentStudent] = useState<Student | null>(null);
   const [previousFirstName, setPreviousFirstName] = useState<string>('');
   const [previousLastName, setPreviousLastName] = useState<string>('');
   const [previousEmail, setPreviousEmail] = useState<string>('');
@@ -60,10 +59,6 @@ const Todos = (props: StudentsProps) => {
     string | undefined
   >('');
 
-  let firstNameError = '';
-  let lastNameError = '';
-  let emailError = '';
-
   const studentsList = useSelector((state: any) => {
     if (state && state.students && state.students.students) {
       return state.students.students;
@@ -80,47 +75,22 @@ const Todos = (props: StudentsProps) => {
     return state.students.error;
   });
 
-  const handleAddNewStudent = (
-    first_name: string,
-    last_name: string,
-    email: string,
-    date_started: string,
-    active: boolean,
-    phone_1: string,
-    phone_2: string,
-    phone_1_label: string,
-    phone_2_label: string,
-    financial_status: string,
-    lesson_length: string,
-    current_rate: string,
-    active_songs: string,
-    additional_notes: string
-  ) => {
-    if (submissionContainsErrors(first_name, last_name, email) === false) {
-      let newStudent = {
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        date_started: date_started,
-        active: active,
-        phone_1: phone_1,
-        phone_2: phone_2,
-        phone_1_label: phone_1_label,
-        phone_2_label: phone_2_label,
-        financial_status: financial_status,
-        lesson_length: lesson_length,
-        current_rate: current_rate,
-        active_songs: active_songs,
-        additional_notes: additional_notes,
-      };
-      dispatch(addNewStudent(newStudent));
+  const handleAddNewStudent = (student: Student) => {
+    const emailValue = student.email === undefined ? '' : student.email;
+    if (
+      submissionContainsErrors(
+        student.first_name,
+        student.last_name,
+        emailValue
+      ) === false
+    ) {
+      dispatch(addNewStudent(student));
     } else {
       return;
     }
   };
 
   const handleEditStudent = (student: Student) => {
-    console.log(student.first_name, student.active);
     setPreviousFirstName(student.first_name);
     setPreviousLastName(student.last_name);
     setPreviousEmail(student.email === undefined ? '' : student.email);
@@ -149,20 +119,7 @@ const Todos = (props: StudentsProps) => {
     ) {
       let updatedStudent = {
         id: editId,
-        first_name: student.first_name,
-        last_name: student.last_name,
-        email: student.email,
-        date_started: student.date_started,
-        active: student.active,
-        phone_1: student.phone_1,
-        phone_2: student.phone_2,
-        phone_1_label: student.phone_1_label,
-        phone_2_label: student.phone_2_label,
-        financial_status: student.financial_status,
-        lesson_length: student.lesson_length,
-        current_rate: student.current_rate,
-        active_songs: student.active_songs,
-        additional_notes: student.additional_notes,
+        ...student,
       };
       dispatch(updateStudent(updatedStudent));
     } else {
@@ -172,35 +129,6 @@ const Todos = (props: StudentsProps) => {
 
   const handleRemoveStudent = (student: Student) => {
     dispatch(deleteStudent(student));
-  };
-
-  const submissionContainsErrors = (
-    first_name: string,
-    last_name: string,
-    email: string | null
-  ) => {
-    if (first_name === '') {
-      firstNameError += `First Name cannot be blank.\n`;
-    }
-    if (last_name === '') {
-      lastNameError += `Last Name cannot be blank.\n`;
-    }
-    if (first_name.length > 50) {
-      firstNameError += `First Name cannot be more than 50 characters.`;
-    }
-    if (last_name.length > 50) {
-      lastNameError += `Last Name cannot be more than 50 characters.`;
-    }
-    if (email !== null && email.length > 150) {
-      emailError += `Email cannot be more than 150 characters.`;
-    }
-    if (firstNameError === '' && lastNameError === '' && emailError === '') {
-      return false;
-    } else {
-      // props.toastHandler(firstNameError + ' ' + lastNameError + emailError);
-      alert(firstNameError + ' ' + lastNameError + ' ' + emailError);
-      return true;
-    }
   };
 
   const sortByHandler = (e: any) => {
@@ -223,66 +151,6 @@ const Todos = (props: StudentsProps) => {
 
   let studentsListDisplay;
 
-  const editForm = (
-    <UpdateStudentForm
-      updateStudent={(student: Student) => {
-        handleUpdateStudent(student);
-      }}
-      previousFirstName={previousFirstName}
-      previousLastName={previousLastName}
-      previousEmail={previousEmail}
-      previousDateStarted={previousDateStarted}
-      previousActive={previousActive}
-      previousPhone1={previousPhone1}
-      previousPhone2={previousPhone2}
-      previousPhone1Label={previousPhone1Label}
-      previousPhone2Label={previousPhone2Label}
-      previousFinancialStatus={previousFinancialStatus}
-      previousLessonLength={previousLessonLength}
-      previousCurrentRate={previousCurrentRate}
-      previousActiveSongs={previousActiveSongs}
-      previousAdditionalNotes={previousAdditionalNotes}
-    />
-  );
-
-  const addForm = (
-    <AddStudentForm
-      handleAddNewStudent={(
-        first_name: string,
-        last_name: string,
-        email: string,
-        date_started: string,
-        active: boolean,
-        phone_1: string,
-        phone_2: string,
-        phone_1_label: string,
-        phone_2_label: string,
-        financial_status: string,
-        lesson_length: string,
-        current_rate: string,
-        active_songs: string,
-        additional_notes: string
-      ) => {
-        handleAddNewStudent(
-          first_name,
-          last_name,
-          email,
-          date_started,
-          active,
-          phone_1,
-          phone_2,
-          phone_1_label,
-          phone_2_label,
-          financial_status,
-          lesson_length,
-          current_rate,
-          active_songs,
-          additional_notes
-        );
-      }}
-    />
-  );
-
   if (getAllStudentsStatus === 'loading') {
     studentsListDisplay = (
       <div className={classes.loader}>
@@ -304,6 +172,9 @@ const Todos = (props: StudentsProps) => {
             deleteHandler={() => {
               handleRemoveStudent(student);
             }}
+            udpateCurrentStudent={() => {
+              setCurrentStudent(student);
+            }}
           />
         );
       } else {
@@ -318,23 +189,75 @@ const Todos = (props: StudentsProps) => {
     <>
       <div className={classes.studentContainer}>
         <SortBar
-          // @ts-ignore
           handleSortChange={(e: Event) => {
             sortByHandler(e);
           }}
-          // @ts-ignore
           handleOrderbyChange={(e: Event) => {
             orderByAscHandler(e);
           }}
         />
         <div className={classes.studentList}>{studentsListDisplay}</div>
-        {/* {addForm} */}
-        <Modal id="addStudentModal" child={addForm} title="Add New Student" />
-        <Modal
-          id="updateStudentModal"
-          child={editForm}
-          title="Update Student"
-        />
+        <Modal id="viewStudentModal" title="View Student Information">
+          <StudentView student={currentStudent} />
+        </Modal>
+        <Modal id="addStudentModal" title="Add New Student">
+          <AddStudentForm
+            handleAddNewStudent={(
+              first_name: string,
+              last_name: string,
+              email: string,
+              date_started: string,
+              active: boolean,
+              phone_1: string,
+              phone_2: string,
+              phone_1_label: string,
+              phone_2_label: string,
+              financial_status: string,
+              lesson_length: string,
+              current_rate: string,
+              active_songs: string,
+              additional_notes: string
+            ) => {
+              handleAddNewStudent({
+                first_name,
+                last_name,
+                email,
+                date_started,
+                active,
+                phone_1,
+                phone_2,
+                phone_1_label,
+                phone_2_label,
+                financial_status,
+                lesson_length,
+                current_rate,
+                active_songs,
+                additional_notes,
+              });
+            }}
+          />
+        </Modal>
+        <Modal id="updateStudentModal" title="Update Student">
+          <UpdateStudentForm
+            updateStudent={(student: Student) => {
+              handleUpdateStudent(student);
+            }}
+            previousFirstName={previousFirstName}
+            previousLastName={previousLastName}
+            previousEmail={previousEmail}
+            previousDateStarted={previousDateStarted}
+            previousActive={previousActive}
+            previousPhone1={previousPhone1}
+            previousPhone2={previousPhone2}
+            previousPhone1Label={previousPhone1Label}
+            previousPhone2Label={previousPhone2Label}
+            previousFinancialStatus={previousFinancialStatus}
+            previousLessonLength={previousLessonLength}
+            previousCurrentRate={previousCurrentRate}
+            previousActiveSongs={previousActiveSongs}
+            previousAdditionalNotes={previousAdditionalNotes}
+          />
+        </Modal>
       </div>
     </>
   );

@@ -2,9 +2,9 @@ import React, { useRef, useState, FC, ReactNode } from 'react';
 import classes from './modal.module.scss';
 
 interface ModalProps {
-  child: ReactNode;
   id: string;
   title: string;
+  children?: ReactNode;
 }
 
 const Modal = (props: ModalProps) => {
@@ -26,7 +26,9 @@ const Modal = (props: ModalProps) => {
               aria-label="Close"
             ></button>
           </div>
-          <div className="modal-body">{props.child}</div>
+          {props.children ? (
+            <div className="modal-body">{props.children}</div>
+          ) : null}
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import Student from '../../models/student';
 interface StudentItemProps {
   editHandler: Function;
   deleteHandler: Function;
+  udpateCurrentStudent: Function;
   student: Student;
 }
 
@@ -15,6 +16,11 @@ const StudentItem = (props: StudentItemProps) => {
         className={`btn ${
           props.student.active ? 'btn-success' : 'btn-warning'
         } ${classes.iconButton}`}
+        data-bs-toggle="modal"
+        data-bs-target="#viewStudentModal"
+        onClick={() => {
+          props.udpateCurrentStudent();
+        }}
       >
         <i className="bi bi-person-fill"></i>
       </button>
