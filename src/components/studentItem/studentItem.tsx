@@ -11,6 +11,13 @@ interface StudentItemProps {
 const StudentItem = (props: StudentItemProps) => {
   return (
     <div key={props.student.id} className={classes.student}>
+      <button
+        className={`btn ${
+          props.student.active ? 'btn-success' : 'btn-warning'
+        } ${classes.iconButton}`}
+      >
+        <i className="bi bi-person-fill"></i>
+      </button>
       <span className={`${classes.studentText} ${classes.studentName}`}>
         {props.student.first_name} {props.student.last_name}
       </span>

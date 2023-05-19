@@ -23,16 +23,42 @@ interface StudentsProps {
   toastHandler: Function;
 }
 
+/*
+TODO!!!!!
+Why isn't add student form resetting?
+*/
+
 const Todos = (props: StudentsProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [editId, setEditId] = useState<string | null | undefined>('');
   const [previousFirstName, setPreviousFirstName] = useState<string>('');
   const [previousLastName, setPreviousLastName] = useState<string>('');
   const [previousEmail, setPreviousEmail] = useState<string>('');
-  // const [previousDateStarted, setPreviousDateStarted] = useState<Date>(
-  //   new Date()
-  // );
   const [previousDateStarted, setPreviousDateStarted] = useState<string>('');
+  const [previousActive, setPreviousActive] = useState<boolean>(true);
+  const [previousPhone1, setPreviousPhone1] = useState<string | undefined>('');
+  const [previousPhone2, setPreviousPhone2] = useState<string | undefined>('');
+  const [previousPhone1Label, setPreviousPhone1Label] = useState<
+    string | undefined
+  >('');
+  const [previousPhone2Label, setPreviousPhone2Label] = useState<
+    string | undefined
+  >('');
+  const [previousFinancialStatus, setPreviousFinancialStatus] = useState<
+    string | undefined
+  >('');
+  const [previousLessonLength, setPreviousLessonLength] = useState<
+    string | undefined
+  >('');
+  const [previousCurrentRate, setPreviousCurrentRate] = useState<
+    string | undefined
+  >('');
+  const [previousActiveSongs, setPreviousActiveSongs] = useState<
+    string | undefined
+  >('');
+  const [previousAdditionalNotes, setPreviousAdditionalNotes] = useState<
+    string | undefined
+  >('');
 
   let firstNameError = '';
   let lastNameError = '';
@@ -58,7 +84,17 @@ const Todos = (props: StudentsProps) => {
     first_name: string,
     last_name: string,
     email: string,
-    date_started: string
+    date_started: string,
+    active: boolean,
+    phone_1: string,
+    phone_2: string,
+    phone_1_label: string,
+    phone_2_label: string,
+    financial_status: string,
+    lesson_length: string,
+    current_rate: string,
+    active_songs: string,
+    additional_notes: string
   ) => {
     if (submissionContainsErrors(first_name, last_name, email) === false) {
       let newStudent = {
@@ -66,6 +102,16 @@ const Todos = (props: StudentsProps) => {
         last_name: last_name,
         email: email,
         date_started: date_started,
+        active: active,
+        phone_1: phone_1,
+        phone_2: phone_2,
+        phone_1_label: phone_1_label,
+        phone_2_label: phone_2_label,
+        financial_status: financial_status,
+        lesson_length: lesson_length,
+        current_rate: current_rate,
+        active_songs: active_songs,
+        additional_notes: additional_notes,
       };
       dispatch(addNewStudent(newStudent));
     } else {
@@ -74,11 +120,22 @@ const Todos = (props: StudentsProps) => {
   };
 
   const handleEditStudent = (student: Student) => {
+    console.log(student.first_name, student.active);
     setPreviousFirstName(student.first_name);
     setPreviousLastName(student.last_name);
     setPreviousEmail(student.email === undefined ? '' : student.email);
     setPreviousDateStarted(student.date_started);
     setEditId(student.id);
+    setPreviousActive(student.active);
+    setPreviousPhone1(student.phone_1);
+    setPreviousPhone2(student.phone_2);
+    setPreviousPhone1Label(student.phone_1_label);
+    setPreviousPhone2Label(student.phone_2_label);
+    setPreviousFinancialStatus(student.financial_status);
+    setPreviousLessonLength(student.lesson_length);
+    setPreviousCurrentRate(student.current_rate);
+    setPreviousActiveSongs(student.active_songs);
+    setPreviousAdditionalNotes(student.additional_notes);
   };
 
   const handleUpdateStudent = (student: Student) => {
@@ -96,6 +153,16 @@ const Todos = (props: StudentsProps) => {
         last_name: student.last_name,
         email: student.email,
         date_started: student.date_started,
+        active: student.active,
+        phone_1: student.phone_1,
+        phone_2: student.phone_2,
+        phone_1_label: student.phone_1_label,
+        phone_2_label: student.phone_2_label,
+        financial_status: student.financial_status,
+        lesson_length: student.lesson_length,
+        current_rate: student.current_rate,
+        active_songs: student.active_songs,
+        additional_notes: student.additional_notes,
       };
       dispatch(updateStudent(updatedStudent));
     } else {
@@ -158,13 +225,23 @@ const Todos = (props: StudentsProps) => {
 
   const editForm = (
     <UpdateStudentForm
+      updateStudent={(student: Student) => {
+        handleUpdateStudent(student);
+      }}
       previousFirstName={previousFirstName}
       previousLastName={previousLastName}
       previousEmail={previousEmail}
       previousDateStarted={previousDateStarted}
-      updateStudent={(student: Student) => {
-        handleUpdateStudent(student);
-      }}
+      previousActive={previousActive}
+      previousPhone1={previousPhone1}
+      previousPhone2={previousPhone2}
+      previousPhone1Label={previousPhone1Label}
+      previousPhone2Label={previousPhone2Label}
+      previousFinancialStatus={previousFinancialStatus}
+      previousLessonLength={previousLessonLength}
+      previousCurrentRate={previousCurrentRate}
+      previousActiveSongs={previousActiveSongs}
+      previousAdditionalNotes={previousAdditionalNotes}
     />
   );
 
@@ -174,9 +251,34 @@ const Todos = (props: StudentsProps) => {
         first_name: string,
         last_name: string,
         email: string,
-        date_started: string
+        date_started: string,
+        active: boolean,
+        phone_1: string,
+        phone_2: string,
+        phone_1_label: string,
+        phone_2_label: string,
+        financial_status: string,
+        lesson_length: string,
+        current_rate: string,
+        active_songs: string,
+        additional_notes: string
       ) => {
-        handleAddNewStudent(first_name, last_name, email, date_started);
+        handleAddNewStudent(
+          first_name,
+          last_name,
+          email,
+          date_started,
+          active,
+          phone_1,
+          phone_2,
+          phone_1_label,
+          phone_2_label,
+          financial_status,
+          lesson_length,
+          current_rate,
+          active_songs,
+          additional_notes
+        );
       }}
     />
   );
@@ -226,6 +328,7 @@ const Todos = (props: StudentsProps) => {
           }}
         />
         <div className={classes.studentList}>{studentsListDisplay}</div>
+        {/* {addForm} */}
         <Modal id="addStudentModal" child={addForm} title="Add New Student" />
         <Modal
           id="updateStudentModal"

@@ -4,11 +4,6 @@
   padding: 8px;
   width: 100%;
 
-  .studentText {
-    align-items: center;
-    display: flex;
-    flex-grow: 1;
-  }
   .studentButton {
     display: flex;
     flex-direction: row;
@@ -16,16 +11,26 @@
     margin-left: 10px;
     width: 100px;
   }
+  .iconButton {
+    margin-right: 10px;
+  }
+  .studentText {
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    flex: 1;
+    line-height: 38px;
+    height: 38px;
+    vertical-align: middle;
+  }
   .studentName,
   .studentEmail,
   .studentDateStarted {
-    display: block;
     flex-grow: 150px;
     max-width: 150px;
-
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
   }
   .spacer {
     flex-grow: 1;
