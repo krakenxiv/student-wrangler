@@ -2,7 +2,6 @@ import React, { useRef, useState, FC, ReactNode } from 'react';
 import classes from './modal.module.scss';
 
 interface ModalProps {
-  // child?: ReactNode;
   id: string;
   title: string;
   children?: ReactNode;
@@ -30,7 +29,6 @@ const Modal = (props: ModalProps) => {
           {props.children ? (
             <div className="modal-body">{props.children}</div>
           ) : null}
-          {/* {props.child ? <div className="modal-body">{props.child}</div> : null} */}
         </div>
       </div>
     </div>
