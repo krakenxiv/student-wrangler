@@ -12,6 +12,7 @@ import {
 import Modal from '../modal/modal';
 import SortBar from '../sortBar/sortBar';
 import StudentItem from '../studentItem/studentItem';
+import StudentView from '../studentView/studentView';
 import Student from '../../models/student';
 import AddStudentForm from '../addStudentForm/addStudentForm';
 import UpdateStudentForm from '../updateStudentForm/updateStudentForm';
@@ -28,6 +29,7 @@ interface StudentsProps {
 const Todos = (props: StudentsProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [editId, setEditId] = useState<string | null | undefined>('');
+  const [currentStudent, setCurrentStudent] = useState<Student | null>(null);
   const [previousFirstName, setPreviousFirstName] = useState<string>('');
   const [previousLastName, setPreviousLastName] = useState<string>('');
   const [previousEmail, setPreviousEmail] = useState<string>('');
@@ -149,66 +151,6 @@ const Todos = (props: StudentsProps) => {
 
   let studentsListDisplay;
 
-  const editForm = (
-    <UpdateStudentForm
-      updateStudent={(student: Student) => {
-        handleUpdateStudent(student);
-      }}
-      previousFirstName={previousFirstName}
-      previousLastName={previousLastName}
-      previousEmail={previousEmail}
-      previousDateStarted={previousDateStarted}
-      previousActive={previousActive}
-      previousPhone1={previousPhone1}
-      previousPhone2={previousPhone2}
-      previousPhone1Label={previousPhone1Label}
-      previousPhone2Label={previousPhone2Label}
-      previousFinancialStatus={previousFinancialStatus}
-      previousLessonLength={previousLessonLength}
-      previousCurrentRate={previousCurrentRate}
-      previousActiveSongs={previousActiveSongs}
-      previousAdditionalNotes={previousAdditionalNotes}
-    />
-  );
-
-  const addForm = (
-    <AddStudentForm
-      handleAddNewStudent={(
-        first_name: string,
-        last_name: string,
-        email: string,
-        date_started: string,
-        active: boolean,
-        phone_1: string,
-        phone_2: string,
-        phone_1_label: string,
-        phone_2_label: string,
-        financial_status: string,
-        lesson_length: string,
-        current_rate: string,
-        active_songs: string,
-        additional_notes: string
-      ) => {
-        handleAddNewStudent({
-          first_name,
-          last_name,
-          email,
-          date_started,
-          active,
-          phone_1,
-          phone_2,
-          phone_1_label,
-          phone_2_label,
-          financial_status,
-          lesson_length,
-          current_rate,
-          active_songs,
-          additional_notes,
-        });
-      }}
-    />
-  );
-
   if (getAllStudentsStatus === 'loading') {
     studentsListDisplay = (
       <div className={classes.loader}>
@@ -230,6 +172,9 @@ const Todos = (props: StudentsProps) => {
             deleteHandler={() => {
               handleRemoveStudent(student);
             }}
+            udpateCurrentStudent={() => {
+              setCurrentStudent(student);
+            }}
           />
         );
       } else {
@@ -244,23 +189,75 @@ const Todos = (props: StudentsProps) => {
     <>
       <div className={classes.studentContainer}>
         <SortBar
-          // @ts-ignore
           handleSortChange={(e: Event) => {
             sortByHandler(e);
           }}
-          // @ts-ignore
           handleOrderbyChange={(e: Event) => {
             orderByAscHandler(e);
           }}
         />
         <div className={classes.studentList}>{studentsListDisplay}</div>
-        {/* {addForm} */}
-        <Modal id="addStudentModal" child={addForm} title="Add New Student" />
-        <Modal
-          id="updateStudentModal"
-          child={editForm}
-          title="Update Student"
-        />
+        <Modal id="viewStudentModal" title="View Student Information">
+          <StudentView student={currentStudent} />
+        </Modal>
+        <Modal id="addStudentModal" title="Add New Student">
+          <AddStudentForm
+            handleAddNewStudent={(
+              first_name: string,
+              last_name: string,
+              email: string,
+              date_started: string,
+              active: boolean,
+              phone_1: string,
+              phone_2: string,
+              phone_1_label: string,
+              phone_2_label: string,
+              financial_status: string,
+              lesson_length: string,
+              current_rate: string,
+              active_songs: string,
+              additional_notes: string
+            ) => {
+              handleAddNewStudent({
+                first_name,
+                last_name,
+                email,
+                date_started,
+                active,
+                phone_1,
+                phone_2,
+                phone_1_label,
+                phone_2_label,
+                financial_status,
+                lesson_length,
+                current_rate,
+                active_songs,
+                additional_notes,
+              });
+            }}
+          />
+        </Modal>
+        <Modal id="updateStudentModal" title="Update Student">
+          <UpdateStudentForm
+            updateStudent={(student: Student) => {
+              handleUpdateStudent(student);
+            }}
+            previousFirstName={previousFirstName}
+            previousLastName={previousLastName}
+            previousEmail={previousEmail}
+            previousDateStarted={previousDateStarted}
+            previousActive={previousActive}
+            previousPhone1={previousPhone1}
+            previousPhone2={previousPhone2}
+            previousPhone1Label={previousPhone1Label}
+            previousPhone2Label={previousPhone2Label}
+            previousFinancialStatus={previousFinancialStatus}
+            previousLessonLength={previousLessonLength}
+            previousCurrentRate={previousCurrentRate}
+            previousActiveSongs={previousActiveSongs}
+            previousAdditionalNotes={previousAdditionalNotes}
+          />
+        </Modal>
       </div>
     </>
   );
