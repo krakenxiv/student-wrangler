@@ -69,3 +69,35 @@ const sortNumerically = (
   }
   return sortedArray;
 };
+
+export const submissionContainsErrors = (
+  first_name: string,
+  last_name: string,
+  email: string | null
+) => {
+  let firstNameError = '';
+  let lastNameError = '';
+  let emailError = '';
+  if (first_name === '') {
+    firstNameError += `First Name cannot be blank.\n`;
+  }
+  if (last_name === '') {
+    lastNameError += `Last Name cannot be blank.\n`;
+  }
+  if (first_name.length > 50) {
+    firstNameError += `First Name cannot be more than 50 characters.`;
+  }
+  if (last_name.length > 50) {
+    lastNameError += `Last Name cannot be more than 50 characters.`;
+  }
+  if (email !== null && email.length > 150) {
+    emailError += `Email cannot be more than 150 characters.`;
+  }
+  if (firstNameError === '' && lastNameError === '' && emailError === '') {
+    return false;
+  } else {
+    // props.toastHandler(firstNameError + ' ' + lastNameError + emailError);
+    alert(firstNameError + ' ' + lastNameError + ' ' + emailError);
+    return true;
+  }
+};
