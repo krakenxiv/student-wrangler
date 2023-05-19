@@ -10,7 +10,7 @@ const Header = () => {
         data-bs-toggle="modal"
         data-bs-target="#addStudentModal"
       >
-        +
+        <i className="bi bi-person-plus-fill"></i>
       </button>
     </header>
   );
