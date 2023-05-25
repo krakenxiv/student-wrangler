@@ -18,13 +18,7 @@ const createStudent = async (student: Student) => {
   } catch (error: any) {
     console.log(error.response.data);
     throw new Error('Unable to establish a login session.');
-    // console.log(error.response.data.error);
   }
-  // const createStudentRequest = await axios.post(
-  //   `${process.env.REACT_APP_CYCLIC_HOST}/students`,
-  //   student
-  // );
-  // return createStudentRequest;
 };
 
 const updateStudent = async (student: Student) => {
