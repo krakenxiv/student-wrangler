@@ -94,6 +94,25 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
           placeholder={props.previousLastName}
         />
       </div>
+
+      <div className={`form-check ${classes.isActiveCheck}`}>
+        <label className="form-check-label" htmlFor="isActiveCheck">
+          Is Active
+        </label>
+        <input className="form-check-input" type="checkbox" id="isActiveCheck" checked={
+          hasBeenClicked === false ? props.previousActive : activeValue
+        }
+          onChange={() => {
+            if (!hasBeenClicked) {
+              setActiveValue(!props.previousActive);
+              setHasBeenClicked(true);
+            } else {
+              setActiveValue(!activeValue);
+            }
+          }}
+        />
+      </div>
+
       <div className="input-group mb-3">
         <label className="input-group-text">Email</label>
         <input
@@ -120,24 +139,6 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
               ? dateStartedValue
               : convertDateTimeDisplayRemoveTime(props.previousDateStarted)
           }
-        />
-      </div>
-
-      <div className="input-group mb-3">
-        <label className="input-group-text">Is Active</label>
-        <input
-          type="checkbox"
-          checked={
-            hasBeenClicked === false ? props.previousActive : activeValue
-          }
-          onChange={() => {
-            if (!hasBeenClicked) {
-              setActiveValue(!props.previousActive);
-              setHasBeenClicked(true);
-            } else {
-              setActiveValue(!activeValue);
-            }
-          }}
         />
       </div>
 
@@ -240,22 +241,19 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
         />
       </div>
 
-      <div className="input-group mb-3">
-        <label className="input-group-text">Additional Notes</label>
-        <input
-          className="form-control"
-          onChange={(e) => {
-            setAdditionalNotesValue(e.target.value);
-          }}
+      <div className="mb-3">
+        <label htmlFor="additionalNotesTextarea" className="form-label">Additional Notes:</label>
+        <textarea className="form-control" id="additionalNotesTextarea" rows={3} onChange={(e) => {
+          setAdditionalNotesValue(e.target.value);
+        }}
           value={additionalNotesValue}
-          placeholder={props.previousAdditionalNotes}
-        />
+          placeholder={props.previousAdditionalNotes}></textarea>
       </div>
 
       <div>
         <button
           type="button"
-          className="btn btn-primary"
+          className="btn btn-primary float-end"
           data-bs-dismiss="modal"
           onClick={() => {
             props.updateStudent({

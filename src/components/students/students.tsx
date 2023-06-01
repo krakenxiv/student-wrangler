@@ -154,9 +154,8 @@ const Todos = (props: StudentsProps) => {
   if (getAllStudentsStatus === 'loading') {
     studentsListDisplay = (
       <div className={classes.loader}>
-        <div className="spinner-grow text-primary" role="status">
-          Loading
-        </div>
+        <span>Loading...</span>
+        <div className="spinner-grow text-primary" role="status"></div>
       </div>
     );
   } else if (getAllStudentsStatus === 'succeeded') {
