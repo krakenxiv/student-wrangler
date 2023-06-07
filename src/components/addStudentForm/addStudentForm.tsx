@@ -50,6 +50,7 @@ const AddStudentForm = (props: AddStudentFormProps) => {
           value={firstNameValue}
         />
       </div>
+
       <div className="input-group mb-3">
         <label className="input-group-text">Last Name</label>
         <input
@@ -60,6 +61,20 @@ const AddStudentForm = (props: AddStudentFormProps) => {
           value={lastNameValue}
         />
       </div>
+
+      <div className={`form-check ${classes.isActiveCheck}`}>
+        <label className="form-check-label" htmlFor="isActiveCheck">Is Active {activeValue}</label>
+        <input
+          type="checkbox"
+          className="form-check-input"
+          id="isActiveCheck"
+          checked={activeValue}
+          onChange={() => {
+            setActiveValue(!activeValue);
+          }}
+        />
+      </div>
+
       <div className="input-group mb-3">
         <label className="input-group-text">Email</label>
         <input
@@ -78,16 +93,6 @@ const AddStudentForm = (props: AddStudentFormProps) => {
           type="date"
           onChange={(e) => {
             setDateStartedValue(e.target.value);
-          }}
-        />
-      </div>
-      <div className="input-group mb-3">
-        <label className="input-group-text">Is Active {activeValue}</label>
-        <input
-          type="checkbox"
-          checked={activeValue}
-          onChange={() => {
-            setActiveValue(!activeValue);
           }}
         />
       </div>
@@ -180,15 +185,11 @@ const AddStudentForm = (props: AddStudentFormProps) => {
         />
       </div>
 
-      <div className="input-group mb-3">
-        <label className="input-group-text">Additional Notes</label>
-        <input
-          className="form-control"
-          type=""
-          onChange={(e) => {
-            setAdditionalNotesValue(e.target.value);
-          }}
-        />
+      <div className="mb-3">
+        <label htmlFor="additionalNotesTextarea" className="form-label">Additional Notes:</label>
+        <textarea className="form-control" id="additionalNotesTextarea" rows={3} onChange={(e) => {
+          setAdditionalNotesValue(e.target.value);
+        }}></textarea>
       </div>
 
       <div>
@@ -213,7 +214,7 @@ const AddStudentForm = (props: AddStudentFormProps) => {
             resetValues();
           }}
           type="button"
-          className="btn btn-primary"
+          className="btn btn-primary float-end"
           data-bs-dismiss="modal"
         >
           Add Student
