@@ -91,6 +91,8 @@ const Todos = (props: StudentsProps) => {
   };
 
   const handleEditStudent = (student: Student) => {
+    console.log('handleEditStudent');
+    console.log(student);
     setPreviousFirstName(student.first_name);
     setPreviousLastName(student.last_name);
     setPreviousEmail(student.email === undefined ? '' : student.email);
@@ -121,6 +123,8 @@ const Todos = (props: StudentsProps) => {
         id: editId,
         ...student,
       };
+      console.log('handleUpdateStudent');
+      console.log(updatedStudent);
       dispatch(updateStudent(updatedStudent));
     } else {
       return;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from '../../utilities/utilities';
 import classes from './studentItem.module.scss';
 import Student from '../../models/student';
 
@@ -31,7 +32,7 @@ const StudentItem = (props: StudentItemProps) => {
         {props.student.email}
       </span>
       <span className={`${classes.studentText} ${classes.studentDateStarted}`}>
-        {new Date(props.student.date_started).toLocaleDateString()}
+        {formatDate(props.student.date_started)}
       </span>
       <span className={classes.spacer}></span>
       <button

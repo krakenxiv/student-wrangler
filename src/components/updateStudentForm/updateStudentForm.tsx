@@ -49,6 +49,7 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
     setLastNameValue('');
     setEmailValue('');
     setDateStartedValue('');
+    setActiveValue(false);
     setPhone1Value('');
     setPhone2Value('');
     setPhone1LabelValue('');
@@ -99,9 +100,13 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
         <label className="form-check-label" htmlFor="isActiveCheck">
           Is Active
         </label>
-        <input className="form-check-input" type="checkbox" id="isActiveCheck" checked={
-          hasBeenClicked === false ? props.previousActive : activeValue
-        }
+        <input
+          className="form-check-input"
+          type="checkbox"
+          id="isActiveCheck"
+          checked={
+            hasBeenClicked === false ? props.previousActive : activeValue
+          }
           onChange={() => {
             if (!hasBeenClicked) {
               setActiveValue(!props.previousActive);
@@ -242,12 +247,19 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="additionalNotesTextarea" className="form-label">Additional Notes:</label>
-        <textarea className="form-control" id="additionalNotesTextarea" rows={3} onChange={(e) => {
-          setAdditionalNotesValue(e.target.value);
-        }}
+        <label htmlFor="additionalNotesTextarea" className="form-label">
+          Additional Notes:
+        </label>
+        <textarea
+          className="form-control"
+          id="additionalNotesTextarea"
+          rows={3}
+          onChange={(e) => {
+            setAdditionalNotesValue(e.target.value);
+          }}
           value={additionalNotesValue}
-          placeholder={props.previousAdditionalNotes}></textarea>
+          placeholder={props.previousAdditionalNotes}
+        ></textarea>
       </div>
 
       <div>

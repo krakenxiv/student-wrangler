@@ -22,6 +22,7 @@ const createStudent = async (student: Student) => {
 };
 
 const updateStudent = async (student: Student) => {
+  console.log(student);
   return await axios.put(
     `${process.env.REACT_APP_CYCLIC_HOST}/students`,
     student

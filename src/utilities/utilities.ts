@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import Student from '../models/student';
 
 export const timestampToDateConvert = (timestampToConvert: number): string => {
@@ -100,4 +101,8 @@ export const submissionContainsErrors = (
     alert(firstNameError + ' ' + lastNameError + ' ' + emailError);
     return true;
   }
+};
+
+export const formatDate = (date: string): string => {
+  return dayjs(date).format('MM/DD/YYYY');
 };
