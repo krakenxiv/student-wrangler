@@ -32,6 +32,7 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
   const [lastNameValue, setLastNameValue] = useState<string>('');
   const [emailValue, setEmailValue] = useState<string>('');
   const [dateStartedValue, setDateStartedValue] = useState<string>('');
+  // const [activeValue, setActiveValue] = useState<boolean>(props.previousActive);
   const [activeValue, setActiveValue] = useState<boolean>(false);
   const [phone1Value, setPhone1Value] = useState<string>('');
   const [phone2Value, setPhone2Value] = useState<string>('');
@@ -42,7 +43,7 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
   const [currentRateValue, setCurrentRateValue] = useState<string>('');
   const [activeSongsValue, setActiveSongsValue] = useState<string>('');
   const [additionalNotesValue, setAdditionalNotesValue] = useState<string>('');
-  const [hasBeenClicked, setHasBeenClicked] = useState<boolean | null>(false);
+  const [hasBeenClicked, setHasBeenClicked] = useState<boolean>(false);
 
   const [firstNameFocused, setFirstNameFocused] = useState<boolean>(false);
   const [lastNameFocused, setLastNameFocused] = useState<boolean>(false);
@@ -76,7 +77,7 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
     setCurrentRateValue('');
     setActiveSongsValue('');
     setAdditionalNotesValue('');
-    setHasBeenClicked(null);
+    setHasBeenClicked(false);
     setFirstNameFocused(false);
     setLastNameFocused(false);
     setEmailFocused(false);
@@ -91,20 +92,6 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
     setActiveSongsFocused(false);
     setAdditionalNotesFocused(false);
   };
-
-  // const updateDate = (date: string): void => {
-  //   setDateStartedValue(convertDateTimeDisplay(date));
-  // };
-
-  // const convertDateTimeDisplayRemoveTime = (date: string): string => {
-  //   let text = date;
-  //   let result = text.substr(0, 10);
-  //   return result;
-  // };
-
-  useEffect(() => {
-    setActiveValue(props.previousActive);
-  }, []);
 
   return (
     <div className={classes.studentForm}>
@@ -167,16 +154,10 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
           className="form-check-input"
           type="checkbox"
           id="isActiveCheck"
-          checked={
-            hasBeenClicked === false ? props.previousActive : activeValue
-          }
-          onChange={() => {
-            if (!hasBeenClicked) {
-              setActiveValue(!props.previousActive);
-              setHasBeenClicked(true);
-            } else {
-              setActiveValue(!activeValue);
-            }
+          checked={hasBeenClicked ? activeValue : props.previousActive}
+          onChange={(e) => {
+            setActiveValue(e.target.checked);
+            setHasBeenClicked(true);
           }}
         />
       </div>
@@ -522,7 +503,6 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
             setAdditionalNotesValue(e.target.value);
           }}
           onClick={() => {
-            console.log(props.previousAdditionalNotes);
             setAdditionalNotesValue(
               props.previousAdditionalNotes ? props.previousAdditionalNotes : ''
             );
@@ -567,10 +547,7 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
               date_started: dateStartedValue
                 ? dateStartedValue
                 : props.previousDateStarted,
-              active:
-                activeValue != props.previousActive
-                  ? activeValue
-                  : props.previousActive,
+              active: hasBeenClicked ? activeValue : props.previousActive,
               phone_1: phone1Value ? phone1Value : props.previousPhone1,
               phone_2: phone2Value ? phone2Value : props.previousPhone2,
               phone_1_label: phone1LabelValue
