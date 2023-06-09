@@ -61,6 +61,7 @@ const Students = (props: StudentsProps) => {
   const [previousAdditionalNotes, setPreviousAdditionalNotes] = useState<
     string | undefined
   >('');
+  const [resetUpdateForm, setResetUpdateForm] = useState(0);
 
   const studentsList = useSelector((state: any) => {
     if (state && state.students && state.students.students) {
@@ -200,6 +201,12 @@ const Students = (props: StudentsProps) => {
     studentsListDisplay = <div>{studentsError}</div>;
   }
 
+  // this allows this parent component to reset the Update Student form when a user
+  // clicks the modal close from this component
+  const updateStudentCloseHandler = () => {
+    setResetUpdateForm(resetUpdateForm + 1);
+  };
+
   return (
     <>
       <div className={classes.studentContainer}>
@@ -223,10 +230,18 @@ const Students = (props: StudentsProps) => {
           -Reconcile current vs active students
         </div>
         <div className={classes.studentList}>{studentsListDisplay}</div>
-        <Modal id="viewStudentModal" title="View Student Information">
+        <Modal
+          id="viewStudentModal"
+          title="View Student Information"
+          closeHandler={() => {}}
+        >
           <StudentView student={currentStudent} />
         </Modal>
-        <Modal id="addStudentModal" title="Add New Student">
+        <Modal
+          id="addStudentModal"
+          title="Add New Student"
+          closeHandler={() => {}}
+        >
           <AddStudentForm
             handleAddNewStudent={(
               first_name: string,
@@ -263,11 +278,16 @@ const Students = (props: StudentsProps) => {
             }}
           />
         </Modal>
-        <Modal id="updateStudentModal" title="Update Student">
+        <Modal
+          id="updateStudentModal"
+          title="Update Student"
+          closeHandler={updateStudentCloseHandler}
+        >
           <UpdateStudentForm
             updateStudent={(student: Student) => {
               handleUpdateStudent(student);
             }}
+            resetUpdateForm={resetUpdateForm}
             previousFirstName={previousFirstName}
             previousLastName={previousLastName}
             previousEmail={previousEmail}

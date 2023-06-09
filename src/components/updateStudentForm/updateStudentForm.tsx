@@ -17,6 +17,7 @@ interface UpdateStudentFormProps {
   previousCurrentRate: string | undefined;
   previousActiveSongs: string | undefined;
   previousAdditionalNotes: string | undefined;
+  resetUpdateForm: number;
 }
 
 const UpdateStudentForm = (props: UpdateStudentFormProps) => {
@@ -32,7 +33,6 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
   const [lastNameValue, setLastNameValue] = useState<string>('');
   const [emailValue, setEmailValue] = useState<string>('');
   const [dateStartedValue, setDateStartedValue] = useState<string>('');
-  // const [activeValue, setActiveValue] = useState<boolean>(props.previousActive);
   const [activeValue, setActiveValue] = useState<boolean>(false);
   const [phone1Value, setPhone1Value] = useState<string>('');
   const [phone2Value, setPhone2Value] = useState<string>('');
@@ -44,7 +44,6 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
   const [activeSongsValue, setActiveSongsValue] = useState<string>('');
   const [additionalNotesValue, setAdditionalNotesValue] = useState<string>('');
   const [hasBeenClicked, setHasBeenClicked] = useState<boolean>(false);
-
   const [firstNameFocused, setFirstNameFocused] = useState<boolean>(false);
   const [lastNameFocused, setLastNameFocused] = useState<boolean>(false);
   const [emailFocused, setEmailFocused] = useState<boolean>(false);
@@ -92,6 +91,14 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
     setActiveSongsFocused(false);
     setAdditionalNotesFocused(false);
   };
+
+  // this allows the parent component to reset the form when a user
+  // clicks the modal close from the parent component... a little clunk
+  useEffect(() => {
+    if (props.resetUpdateForm) {
+      resetValues();
+    }
+  }, [props.resetUpdateForm]);
 
   return (
     <div className={classes.studentForm}>
