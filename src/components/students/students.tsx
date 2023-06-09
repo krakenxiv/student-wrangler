@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
+import { stripPhoneNumber } from '../../utilities/utilities';
 import {
   fetchAllStudents,
   addNewStudent,
@@ -26,9 +27,11 @@ interface StudentsProps {
   toastHandler: Function;
 }
 
-const Todos = (props: StudentsProps) => {
+const Students = (props: StudentsProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [editId, setEditId] = useState<string | null | undefined>('');
+  // current student is the current student being displayed
+  // not to be confused with the students 'active' setting
   const [currentStudent, setCurrentStudent] = useState<Student | null>(null);
   const [previousFirstName, setPreviousFirstName] = useState<string>('');
   const [previousLastName, setPreviousLastName] = useState<string>('');
@@ -77,6 +80,15 @@ const Todos = (props: StudentsProps) => {
 
   const handleAddNewStudent = (student: Student) => {
     const emailValue = student.email === undefined ? '' : student.email;
+    const updatedStudent = {
+      ...student,
+      phone_1: stripPhoneNumber(student.phone_1),
+      phone_2: stripPhoneNumber(student.phone_2),
+      phone_1_label:
+        student.phone_1_label !== '' ? student.phone_1_label : 'Phone 1 Label',
+      phone_2_label:
+        student.phone_2_label !== '' ? student.phone_2_label : 'Phone 2 Label',
+    };
     if (
       submissionContainsErrors(
         student.first_name,
@@ -84,7 +96,7 @@ const Todos = (props: StudentsProps) => {
         emailValue
       ) === false
     ) {
-      dispatch(addNewStudent(student));
+      dispatch(addNewStudent(updatedStudent));
     } else {
       return;
     }
@@ -120,11 +132,11 @@ const Todos = (props: StudentsProps) => {
       ) === false
     ) {
       let updatedStudent = {
-        id: editId,
         ...student,
+        id: editId,
+        phone_1: stripPhoneNumber(student.phone_1),
+        phone_2: stripPhoneNumber(student.phone_2),
       };
-      console.log('handleUpdateStudent');
-      console.log(updatedStudent);
       dispatch(updateStudent(updatedStudent));
     } else {
       return;
@@ -199,6 +211,17 @@ const Todos = (props: StudentsProps) => {
             orderByAscHandler(e);
           }}
         />
+        <div className={classes.todos}>
+          <b>TODOS!</b>
+          <br />
+          -Format phone numbers before database insertion and when displaying
+          <br />
+          -Fix date started display on update form
+          <br />
+          -Fix active display on update form
+          <br />
+          -Reconcile current vs active students
+        </div>
         <div className={classes.studentList}>{studentsListDisplay}</div>
         <Modal id="viewStudentModal" title="View Student Information">
           <StudentView student={currentStudent} />
@@ -266,4 +289,4 @@ const Todos = (props: StudentsProps) => {
   );
 };
 
-export default Todos;
+export default Students;

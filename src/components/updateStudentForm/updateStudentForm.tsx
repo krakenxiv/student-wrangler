@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import classes from './updateStudentForm.module.scss';
 
 interface UpdateStudentFormProps {
@@ -20,11 +20,11 @@ interface UpdateStudentFormProps {
 }
 
 const UpdateStudentForm = (props: UpdateStudentFormProps) => {
-  const convertDateTimeDisplay = (str: any) => {
-    let newStr = str.toString().replace(/T/g, ' ');
-    newStr = newStr.replace(/Z/g, '');
-    return newStr;
-  };
+  // const convertDateTimeDisplay = (str: any) => {
+  //   let newStr = str.toString().replace(/T/g, ' ');
+  //   newStr = newStr.replace(/Z/g, '');
+  //   return newStr;
+  // };
 
   // const activeRef = useRef();
 
@@ -44,6 +44,23 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
   const [additionalNotesValue, setAdditionalNotesValue] = useState<string>('');
   const [hasBeenClicked, setHasBeenClicked] = useState<boolean | null>(false);
 
+  const [firstNameFocused, setFirstNameFocused] = useState<boolean>(false);
+  const [lastNameFocused, setLastNameFocused] = useState<boolean>(false);
+  const [emailFocused, setEmailFocused] = useState<boolean>(false);
+  const [startDateFocused, setStartDateFocused] = useState<boolean>(false);
+  const [phone1Focused, setPhone1Focused] = useState<boolean>(false);
+  const [phone2Focused, setPhone2Focused] = useState<boolean>(false);
+  const [phone1LabelFocused, setPhone1LabelFocused] = useState<boolean>(false);
+  const [phone2LabelFocused, setPhone2LabelFocused] = useState<boolean>(false);
+  const [financialStatusFocused, setFinancialStatusFocused] =
+    useState<boolean>(false);
+  const [lessonLengthFocused, setLessonLengthFocused] =
+    useState<boolean>(false);
+  const [currentRateFocused, setCurrentRateFocused] = useState<boolean>(false);
+  const [activeSongsFocused, setActiveSongsFocused] = useState<boolean>(false);
+  const [additionalNotesFocused, setAdditionalNotesFocused] =
+    useState<boolean>(false);
+
   const resetValues = () => {
     setFirstNameValue('');
     setLastNameValue('');
@@ -59,43 +76,89 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
     setCurrentRateValue('');
     setActiveSongsValue('');
     setAdditionalNotesValue('');
+    setHasBeenClicked(null);
+    setFirstNameFocused(false);
+    setLastNameFocused(false);
+    setEmailFocused(false);
+    setStartDateFocused(false);
+    setPhone1Focused(false);
+    setPhone2Focused(false);
+    setPhone1LabelFocused(false);
+    setPhone2LabelFocused(false);
+    setFinancialStatusFocused(false);
+    setLessonLengthFocused(false);
+    setCurrentRateFocused(false);
+    setActiveSongsFocused(false);
+    setAdditionalNotesFocused(false);
   };
 
-  const updateDate = (date: string): void => {
-    setDateStartedValue(convertDateTimeDisplay(date));
-  };
+  // const updateDate = (date: string): void => {
+  //   setDateStartedValue(convertDateTimeDisplay(date));
+  // };
 
-  const convertDateTimeDisplayRemoveTime = (date: string): string => {
-    let text = date;
-    let result = text.substr(0, 10);
-    return result;
-  };
+  // const convertDateTimeDisplayRemoveTime = (date: string): string => {
+  //   let text = date;
+  //   let result = text.substr(0, 10);
+  //   return result;
+  // };
+
+  useEffect(() => {
+    setActiveValue(props.previousActive);
+  }, []);
 
   return (
     <div className={classes.studentForm}>
+      {/* FIRST NAME */}
       <div className="input-group mb-3">
         <label className="input-group-text">First Name</label>
         <input
           className="form-control"
+          type="text"
           onChange={(event) => {
             setFirstNameValue(event.target.value);
           }}
-          value={firstNameValue}
+          onClick={() => {
+            setFirstNameValue(props.previousFirstName);
+          }}
+          onFocus={() => {
+            setFirstNameFocused(true);
+          }}
+          onBlur={() => {
+            if (firstNameValue === '') {
+              setFirstNameFocused(false);
+            }
+          }}
+          value={firstNameFocused ? firstNameValue : props.previousFirstName}
           placeholder={props.previousFirstName}
         />
       </div>
+
+      {/* LAST NAME */}
       <div className="input-group mb-3">
         <label className="input-group-text">Last Name</label>
         <input
           className="form-control"
+          type="text"
           onChange={(event) => {
             setLastNameValue(event.target.value);
           }}
-          value={lastNameValue}
+          onClick={() => {
+            setLastNameValue(props.previousLastName);
+          }}
+          onFocus={() => {
+            setLastNameFocused(true);
+          }}
+          onBlur={() => {
+            if (lastNameValue === '') {
+              setLastNameFocused(false);
+            }
+          }}
+          value={lastNameFocused ? lastNameValue : props.previousLastName}
           placeholder={props.previousLastName}
         />
       </div>
 
+      {/* IS ACTIVE */}
       <div className={`form-check ${classes.isActiveCheck}`}>
         <label className="form-check-label" htmlFor="isActiveCheck">
           Is Active
@@ -118,134 +181,335 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
         />
       </div>
 
+      {/* EMAIL */}
       <div className="input-group mb-3">
         <label className="input-group-text">Email</label>
         <input
           className="form-control"
+          type="email"
           id="email"
           onChange={(event) => {
             setEmailValue(event.target.value);
           }}
-          value={emailValue}
+          onClick={() => {
+            setEmailValue(props.previousEmail ? props.previousEmail : '');
+          }}
+          onFocus={() => {
+            setEmailFocused(true);
+          }}
+          onBlur={() => {
+            if (emailValue === '') {
+              setEmailFocused(false);
+            }
+          }}
+          value={
+            emailFocused
+              ? emailValue
+              : props.previousEmail
+              ? props.previousEmail
+              : ''
+          }
           placeholder={props.previousEmail ? props.previousEmail : ''}
         />
       </div>
 
+      {/* DATE STARTED */}
       <div className="input-group mb-3">
         <label className="input-group-text">Date Started</label>
         <input
           className="form-control"
           type="date"
           onChange={(event) => {
-            updateDate(event.target.value);
+            setDateStartedValue(event.target.value);
+          }}
+          onClick={() => {
+            setDateStartedValue(
+              props.previousDateStarted ? props.previousDateStarted : ''
+            );
+          }}
+          onFocus={() => {
+            setStartDateFocused(true);
+          }}
+          onBlur={() => {
+            if (dateStartedValue === '') {
+              setStartDateFocused(false);
+            }
           }}
           value={
-            dateStartedValue
+            startDateFocused
               ? dateStartedValue
-              : convertDateTimeDisplayRemoveTime(props.previousDateStarted)
+              : props.previousDateStarted
+              ? props.previousDateStarted
+              : ''
           }
         />
       </div>
 
+      {/* PHONE 1 */}
       <div className="input-group mb-3">
         <label className="input-group-text">
           {phone1LabelValue ? phone1LabelValue : props.previousPhone1Label}
         </label>
         <input
           className="form-control"
+          type="text"
           onChange={(e) => {
             setPhone1Value(e.target.value);
           }}
-          value={phone1Value}
+          onClick={() => {
+            setPhone1Value(props.previousPhone1 ? props.previousPhone1 : '');
+          }}
+          onFocus={() => {
+            setPhone1Focused(true);
+          }}
+          onBlur={() => {
+            if (phone1Value === '') {
+              setPhone1Focused(false);
+            }
+          }}
+          value={
+            phone1Focused
+              ? phone1Value
+              : props.previousPhone1
+              ? props.previousPhone1
+              : ''
+          }
           placeholder={props.previousPhone1}
         />
       </div>
 
+      {/* PHONE 1 LABEL */}
       <div className="input-group mb-3">
         <label className="input-group-text">Phone 1 Label</label>
         <input
           className="form-control"
+          type="text"
           onChange={(e) => {
             setPhone1LabelValue(e.target.value);
           }}
-          value={phone1LabelValue}
+          onClick={() => {
+            setPhone1LabelValue(
+              props.previousPhone1Label ? props.previousPhone1Label : ''
+            );
+          }}
+          onFocus={() => {
+            setPhone1LabelFocused(true);
+          }}
+          onBlur={() => {
+            if (phone1LabelValue === '') {
+              setPhone1LabelFocused(false);
+            }
+          }}
+          value={
+            phone1LabelFocused
+              ? phone1LabelValue
+              : props.previousPhone1Label
+              ? props.previousPhone1Label
+              : ''
+          }
           placeholder={props.previousPhone1Label}
         />
       </div>
 
+      {/* PHONE 2 */}
       <div className="input-group mb-3">
         <label className="input-group-text">
           {phone2LabelValue ? phone2LabelValue : props.previousPhone2Label}
         </label>
         <input
           className="form-control"
+          type="text"
           onChange={(e) => {
             setPhone2Value(e.target.value);
           }}
-          value={phone2Value}
+          onClick={() => {
+            setPhone2Value(props.previousPhone2 ? props.previousPhone2 : '');
+          }}
+          onFocus={() => {
+            setPhone2Focused(true);
+          }}
+          onBlur={() => {
+            if (phone2Value === '') {
+              setPhone2Focused(false);
+            }
+          }}
+          value={
+            phone2Focused
+              ? phone2Value
+              : props.previousPhone2
+              ? props.previousPhone2
+              : ''
+          }
           placeholder={props.previousPhone2}
         />
       </div>
 
+      {/* PHONE 2 LABEL */}
       <div className="input-group mb-3">
         <label className="input-group-text">Phone 2 Label</label>
         <input
           className="form-control"
+          type="text"
           onChange={(e) => {
             setPhone2LabelValue(e.target.value);
           }}
-          value={phone2LabelValue}
+          onClick={() => {
+            setPhone2LabelValue(
+              props.previousPhone2Label ? props.previousPhone2Label : ''
+            );
+          }}
+          onFocus={() => {
+            setPhone2LabelFocused(true);
+          }}
+          onBlur={() => {
+            if (phone2LabelValue === '') {
+              setPhone2LabelFocused(false);
+            }
+          }}
+          value={
+            phone2LabelFocused
+              ? phone2LabelValue
+              : props.previousPhone2Label
+              ? props.previousPhone2Label
+              : ''
+          }
           placeholder={props.previousPhone2Label}
         />
       </div>
 
+      {/* FINANCIALLY CURRENT */}
       <div className="input-group mb-3">
         <label className="input-group-text">Financially Current</label>
         <input
           className="form-control"
+          type="text"
           onChange={(e) => {
             setFinancialStatusValue(e.target.value);
           }}
-          value={financialStatusValue}
+          onClick={() => {
+            setFinancialStatusValue(
+              props.previousFinancialStatus ? props.previousFinancialStatus : ''
+            );
+          }}
+          onFocus={() => {
+            setFinancialStatusFocused(true);
+          }}
+          onBlur={() => {
+            if (financialStatusValue === '') {
+              setFinancialStatusFocused(false);
+            }
+          }}
+          value={
+            financialStatusFocused
+              ? financialStatusValue
+              : props.previousFinancialStatus
+              ? props.previousFinancialStatus
+              : ''
+          }
           placeholder={props.previousFinancialStatus}
         />
       </div>
 
+      {/* LESSON LENGTH */}
       <div className="input-group mb-3">
         <label className="input-group-text">Lesson Length</label>
         <input
           className="form-control"
+          type="text"
           onChange={(e) => {
             setLessonLengthValue(e.target.value);
           }}
-          value={lessonLengthValue}
+          onClick={() => {
+            setLessonLengthValue(
+              props.previousLessonLength ? props.previousLessonLength : ''
+            );
+          }}
+          onFocus={() => {
+            setLessonLengthFocused(true);
+          }}
+          onBlur={() => {
+            if (lessonLengthValue === '') {
+              setLessonLengthFocused(false);
+            }
+          }}
+          value={
+            lessonLengthFocused
+              ? lessonLengthValue
+              : props.previousLessonLength
+              ? props.previousLessonLength
+              : ''
+          }
           placeholder={props.previousLessonLength}
         />
       </div>
+
+      {/* CURRENT RATE */}
       <div className="input-group mb-3">
         <label className="input-group-text">Current Rate</label>
         <input
           className="form-control"
+          type="text"
           onChange={(e) => {
             setCurrentRateValue(e.target.value);
           }}
-          value={currentRateValue}
+          onClick={() => {
+            setCurrentRateValue(
+              props.previousCurrentRate ? props.previousCurrentRate : ''
+            );
+          }}
+          onFocus={() => {
+            setCurrentRateFocused(true);
+          }}
+          onBlur={() => {
+            if (currentRateValue === '') {
+              setCurrentRateFocused(false);
+            }
+          }}
+          value={
+            currentRateFocused
+              ? currentRateValue
+              : props.previousCurrentRate
+              ? props.previousCurrentRate
+              : ''
+          }
           placeholder={props.previousCurrentRate}
         />
       </div>
 
+      {/* ACTIVE SONGS */}
       <div className="input-group mb-3">
         <label className="input-group-text">Active Songs</label>
         <input
           className="form-control"
+          type="text"
           onChange={(e) => {
             setActiveSongsValue(e.target.value);
           }}
-          value={activeSongsValue}
+          onClick={() => {
+            setActiveSongsValue(
+              props.previousActiveSongs ? props.previousActiveSongs : ''
+            );
+          }}
+          onFocus={() => {
+            setActiveSongsFocused(true);
+          }}
+          onBlur={() => {
+            if (activeSongsValue === '') {
+              setActiveSongsFocused(false);
+            }
+          }}
+          value={
+            activeSongsFocused
+              ? activeSongsValue
+              : props.previousActiveSongs
+              ? props.previousActiveSongs
+              : ''
+          }
           placeholder={props.previousActiveSongs}
         />
       </div>
 
+      {/* ADDITIONAL NOTES */}
       <div className="mb-3">
         <label htmlFor="additionalNotesTextarea" className="form-label">
           Additional Notes:
@@ -257,9 +521,35 @@ const UpdateStudentForm = (props: UpdateStudentFormProps) => {
           onChange={(e) => {
             setAdditionalNotesValue(e.target.value);
           }}
-          value={additionalNotesValue}
+          onClick={() => {
+            console.log(props.previousAdditionalNotes);
+            setAdditionalNotesValue(
+              props.previousAdditionalNotes ? props.previousAdditionalNotes : ''
+            );
+          }}
+          onFocus={() => {
+            setAdditionalNotesFocused(true);
+          }}
+          onBlur={() => {
+            if (activeSongsValue === '') {
+              setAdditionalNotesFocused(false);
+            }
+          }}
+          value={
+            additionalNotesFocused
+              ? additionalNotesValue
+              : props.previousAdditionalNotes
+              ? props.previousAdditionalNotes
+              : ''
+          }
           placeholder={props.previousAdditionalNotes}
-        ></textarea>
+        >
+          {/* {additionalNotesFocused
+            ? additionalNotesValue
+            : props.previousAdditionalNotes
+            ? props.previousAdditionalNotes
+            : ''} */}
+        </textarea>
       </div>
 
       <div>

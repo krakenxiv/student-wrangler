@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { formatPhoneNumber } from '../../utilities/utilities';
 import Student from '../../models/student';
 import classes from './studentView.module.scss';
 import avatar from '../../assets/images/avatarIcon.png';
@@ -26,12 +27,14 @@ const StudentView = (props: StudentViewProps) => {
           {props.student.email ? <>Email: {props.student.email}</> : null}
           {props.student.phone_1 ? (
             <div>
-              {props.student.phone_1_label}:{props.student.phone_1}
+              {props.student.phone_1_label}:&nbsp;
+              {formatPhoneNumber(props.student.phone_1)}
             </div>
           ) : null}
           {props.student.phone_2 ? (
             <div>
-              {props.student.phone_2_label}:{props.student.phone_2}
+              {props.student.phone_2_label}:&nbsp;
+              {formatPhoneNumber(props.student.phone_2)}
             </div>
           ) : null}
 
