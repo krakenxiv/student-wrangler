@@ -44,26 +44,46 @@ const AddStudentForm = (props: AddStudentFormProps) => {
         <label className="input-group-text">First Name</label>
         <input
           className="form-control"
+          type="text"
           onChange={(event) => {
             setFirstNameValue(event.target.value);
           }}
           value={firstNameValue}
         />
       </div>
+
       <div className="input-group mb-3">
         <label className="input-group-text">Last Name</label>
         <input
           className="form-control"
+          type="text"
           onChange={(event) => {
             setLastNameValue(event.target.value);
           }}
           value={lastNameValue}
         />
       </div>
+
+      <div className={`form-check ${classes.isActiveCheck}`}>
+        <label className="form-check-label" htmlFor="isActiveCheck">
+          Is Active {activeValue}
+        </label>
+        <input
+          type="checkbox"
+          className="form-check-input"
+          id="isActiveCheck"
+          checked={activeValue}
+          onChange={() => {
+            setActiveValue(!activeValue);
+          }}
+        />
+      </div>
+
       <div className="input-group mb-3">
         <label className="input-group-text">Email</label>
         <input
           className="form-control"
+          type="email"
           onChange={(event) => {
             setEmailValue(event.target.value);
           }}
@@ -79,16 +99,7 @@ const AddStudentForm = (props: AddStudentFormProps) => {
           onChange={(e) => {
             setDateStartedValue(e.target.value);
           }}
-        />
-      </div>
-      <div className="input-group mb-3">
-        <label className="input-group-text">Is Active {activeValue}</label>
-        <input
-          type="checkbox"
-          checked={activeValue}
-          onChange={() => {
-            setActiveValue(!activeValue);
-          }}
+          value={dateStartedValue}
         />
       </div>
 
@@ -96,10 +107,11 @@ const AddStudentForm = (props: AddStudentFormProps) => {
         <label className="input-group-text">{phone1LabelValue}</label>
         <input
           className="form-control"
-          type=""
+          type="text"
           onChange={(e) => {
             setPhone1Value(e.target.value);
           }}
+          value={phone1Value}
         />
       </div>
 
@@ -107,10 +119,11 @@ const AddStudentForm = (props: AddStudentFormProps) => {
         <label className="input-group-text">Phone 1 Label</label>
         <input
           className="form-control"
-          type=""
+          type="text"
           onChange={(e) => {
             setPhone1LabelValue(e.target.value);
           }}
+          value={phone1LabelValue}
         />
       </div>
 
@@ -118,10 +131,11 @@ const AddStudentForm = (props: AddStudentFormProps) => {
         <label className="input-group-text">{phone2LabelValue}</label>
         <input
           className="form-control"
-          type=""
+          type="text"
           onChange={(e) => {
             setPhone2Value(e.target.value);
           }}
+          value={phone2Value}
         />
       </div>
 
@@ -129,10 +143,11 @@ const AddStudentForm = (props: AddStudentFormProps) => {
         <label className="input-group-text">Phone 2 Label</label>
         <input
           className="form-control"
-          type=""
+          type="text"
           onChange={(e) => {
             setPhone2LabelValue(e.target.value);
           }}
+          value={phone2LabelValue}
         />
       </div>
 
@@ -140,10 +155,11 @@ const AddStudentForm = (props: AddStudentFormProps) => {
         <label className="input-group-text">Financially Current</label>
         <input
           className="form-control"
-          type=""
+          type="text"
           onChange={(e) => {
             setFinancialStatusValue(e.target.value);
           }}
+          value={financialStatusValue}
         />
       </div>
 
@@ -151,10 +167,11 @@ const AddStudentForm = (props: AddStudentFormProps) => {
         <label className="input-group-text">Current Rate</label>
         <input
           className="form-control"
-          type=""
+          type="text"
           onChange={(e) => {
             setCurrentRateValue(e.target.value);
           }}
+          value={currentRateValue}
         />
       </div>
 
@@ -162,10 +179,11 @@ const AddStudentForm = (props: AddStudentFormProps) => {
         <label className="input-group-text">Lesson Length</label>
         <input
           className="form-control"
-          type=""
+          type="text"
           onChange={(e) => {
             setLessonLengthValue(e.target.value);
           }}
+          value={lessonLengthValue}
         />
       </div>
 
@@ -173,22 +191,27 @@ const AddStudentForm = (props: AddStudentFormProps) => {
         <label className="input-group-text">Active Songs</label>
         <input
           className="form-control"
-          type=""
+          type="text"
           onChange={(e) => {
             setActiveSongsValue(e.target.value);
           }}
+          value={activeSongsValue}
         />
       </div>
 
-      <div className="input-group mb-3">
-        <label className="input-group-text">Additional Notes</label>
-        <input
+      <div className="mb-3">
+        <label htmlFor="additionalNotesTextarea" className="form-label">
+          Additional Notes:
+        </label>
+        <textarea
           className="form-control"
-          type=""
+          id="additionalNotesTextarea"
+          rows={3}
           onChange={(e) => {
             setAdditionalNotesValue(e.target.value);
           }}
-        />
+          value={additionalNotesValue}
+        ></textarea>
       </div>
 
       <div>
@@ -213,7 +236,7 @@ const AddStudentForm = (props: AddStudentFormProps) => {
             resetValues();
           }}
           type="button"
-          className="btn btn-primary"
+          className="btn btn-primary float-end"
           data-bs-dismiss="modal"
         >
           Add Student

@@ -24,7 +24,7 @@ function App() {
         <>
           <Auth0Bar />
           <Header />
-          <Students toastHandler={() => { }} />
+          <Students toastHandler={() => {}} />
         </>
       ) : (
         <LoginDisplay />

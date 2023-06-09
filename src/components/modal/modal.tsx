@@ -5,6 +5,7 @@ interface ModalProps {
   id: string;
   title: string;
   children?: ReactNode;
+  closeHandler: Function;
 }
 
 const Modal = (props: ModalProps) => {
@@ -24,6 +25,9 @@ const Modal = (props: ModalProps) => {
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              onClick={() => {
+                props.closeHandler();
+              }}
             ></button>
           </div>
           {props.children ? (

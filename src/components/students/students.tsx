@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
+import { stripPhoneNumber } from '../../utilities/utilities';
 import {
   fetchAllStudents,
   addNewStudent,
@@ -26,9 +27,11 @@ interface StudentsProps {
   toastHandler: Function;
 }
 
-const Todos = (props: StudentsProps) => {
+const Students = (props: StudentsProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [editId, setEditId] = useState<string | null | undefined>('');
+  // current student is the current student being displayed
+  // not to be confused with the students 'active' setting
   const [currentStudent, setCurrentStudent] = useState<Student | null>(null);
   const [previousFirstName, setPreviousFirstName] = useState<string>('');
   const [previousLastName, setPreviousLastName] = useState<string>('');
@@ -58,6 +61,7 @@ const Todos = (props: StudentsProps) => {
   const [previousAdditionalNotes, setPreviousAdditionalNotes] = useState<
     string | undefined
   >('');
+  const [resetUpdateForm, setResetUpdateForm] = useState(0);
 
   const studentsList = useSelector((state: any) => {
     if (state && state.students && state.students.students) {
@@ -77,6 +81,15 @@ const Todos = (props: StudentsProps) => {
 
   const handleAddNewStudent = (student: Student) => {
     const emailValue = student.email === undefined ? '' : student.email;
+    const updatedStudent = {
+      ...student,
+      phone_1: stripPhoneNumber(student.phone_1),
+      phone_2: stripPhoneNumber(student.phone_2),
+      phone_1_label:
+        student.phone_1_label !== '' ? student.phone_1_label : 'Phone 1 Label',
+      phone_2_label:
+        student.phone_2_label !== '' ? student.phone_2_label : 'Phone 2 Label',
+    };
     if (
       submissionContainsErrors(
         student.first_name,
@@ -84,13 +97,15 @@ const Todos = (props: StudentsProps) => {
         emailValue
       ) === false
     ) {
-      dispatch(addNewStudent(student));
+      dispatch(addNewStudent(updatedStudent));
     } else {
       return;
     }
   };
 
   const handleEditStudent = (student: Student) => {
+    console.log('handleEditStudent');
+    console.log(student);
     setPreviousFirstName(student.first_name);
     setPreviousLastName(student.last_name);
     setPreviousEmail(student.email === undefined ? '' : student.email);
@@ -118,8 +133,10 @@ const Todos = (props: StudentsProps) => {
       ) === false
     ) {
       let updatedStudent = {
-        id: editId,
         ...student,
+        id: editId,
+        phone_1: stripPhoneNumber(student.phone_1),
+        phone_2: stripPhoneNumber(student.phone_2),
       };
       dispatch(updateStudent(updatedStudent));
     } else {
@@ -184,6 +201,12 @@ const Todos = (props: StudentsProps) => {
     studentsListDisplay = <div>{studentsError}</div>;
   }
 
+  // this allows this parent component to reset the Update Student form when a user
+  // clicks the modal close from this component
+  const updateStudentCloseHandler = () => {
+    setResetUpdateForm(resetUpdateForm + 1);
+  };
+
   return (
     <>
       <div className={classes.studentContainer}>
@@ -195,11 +218,30 @@ const Todos = (props: StudentsProps) => {
             orderByAscHandler(e);
           }}
         />
+        <div className={classes.todos}>
+          <b>TODOS!</b>
+          <br />
+          -Format phone numbers before database insertion and when displaying
+          <br />
+          -Fix date started display on update form
+          <br />
+          -Fix active display on update form
+          <br />
+          -Reconcile current vs active students
+        </div>
         <div className={classes.studentList}>{studentsListDisplay}</div>
-        <Modal id="viewStudentModal" title="View Student Information">
+        <Modal
+          id="viewStudentModal"
+          title="View Student Information"
+          closeHandler={() => {}}
+        >
           <StudentView student={currentStudent} />
         </Modal>
-        <Modal id="addStudentModal" title="Add New Student">
+        <Modal
+          id="addStudentModal"
+          title="Add New Student"
+          closeHandler={() => {}}
+        >
           <AddStudentForm
             handleAddNewStudent={(
               first_name: string,
@@ -236,11 +278,16 @@ const Todos = (props: StudentsProps) => {
             }}
           />
         </Modal>
-        <Modal id="updateStudentModal" title="Update Student">
+        <Modal
+          id="updateStudentModal"
+          title="Update Student"
+          closeHandler={updateStudentCloseHandler}
+        >
           <UpdateStudentForm
             updateStudent={(student: Student) => {
               handleUpdateStudent(student);
             }}
+            resetUpdateForm={resetUpdateForm}
             previousFirstName={previousFirstName}
             previousLastName={previousLastName}
             previousEmail={previousEmail}
@@ -262,4 +309,4 @@ const Todos = (props: StudentsProps) => {
   );
 };
 
-export default Todos;
+export default Students;

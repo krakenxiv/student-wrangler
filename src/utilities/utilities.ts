@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import Student from '../models/student';
 
 export const timestampToDateConvert = (timestampToConvert: number): string => {
@@ -100,4 +101,36 @@ export const submissionContainsErrors = (
     alert(firstNameError + ' ' + lastNameError + ' ' + emailError);
     return true;
   }
+};
+
+export const formatDate = (date: string): string => {
+  return dayjs(date).format('MM/DD/YYYY');
+};
+
+// strips phone numbers before inserting into database
+export const stripPhoneNumber = (phoneNumber: string | undefined): string => {
+  // strip first character if it's a 1
+  if (phoneNumber && phoneNumber.charAt(0) === '1') {
+    phoneNumber = phoneNumber.replace(phoneNumber.charAt(0), '');
+  }
+  return phoneNumber ? phoneNumber.replace(/\D/g, '') : '';
+};
+
+// formats phone number before displaying in UI
+export const formatPhoneNumber = (phoneNumber: string | undefined): string => {
+  let dressedNumber;
+  if (!phoneNumber) {
+    return '';
+  }
+
+  dressedNumber = [phoneNumber.slice(0, 6), '-', phoneNumber.slice(6)].join('');
+  dressedNumber = [
+    dressedNumber.slice(0, 3),
+    ') ',
+    dressedNumber.slice(3),
+  ].join('');
+  dressedNumber = [dressedNumber.slice(0, 0), '(', dressedNumber.slice(0)].join(
+    ''
+  );
+  return dressedNumber;
 };
