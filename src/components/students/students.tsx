@@ -17,6 +17,7 @@ import StudentView from '../studentView/studentView';
 import Student from '../../models/student';
 import AddStudentForm from '../addStudentForm/addStudentForm';
 import UpdateStudentForm from '../updateStudentForm/updateStudentForm';
+import Spinner from '../../components/spinner/spinner';
 import classes from './students.module.scss';
 import { submissionContainsErrors } from '../../utilities/utilities';
 
@@ -172,8 +173,7 @@ const Students = (props: StudentsProps) => {
   if (getAllStudentsStatus === 'loading') {
     studentsListDisplay = (
       <div className={classes.loader}>
-        <span>Loading...</span>
-        <div className="spinner-grow text-primary" role="status"></div>
+        <Spinner />
       </div>
     );
   } else if (getAllStudentsStatus === 'succeeded') {
@@ -219,10 +219,14 @@ const Students = (props: StudentsProps) => {
             orderByAscHandler(e);
           }}
         />
-        <div className={classes.todos}>
-          <b>TODOS!</b>
-          Add Photo Upload?
-        </div>
+        {process.env.NODE_ENV === 'development' ? (
+          <div className={classes.todos}>
+            <b>TODOS!</b>
+            <ul>
+              <li>Add Photo Upload?</li>
+            </ul>
+          </div>
+        ) : null}
         <div className={classes.studentList}>{studentsListDisplay}</div>
         <Modal
           id="viewStudentModal"

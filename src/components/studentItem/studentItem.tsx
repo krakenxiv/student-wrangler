@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatDate } from '../../utilities/utilities';
+import { formatDate, formatPhoneNumber } from '../../utilities/utilities';
 import classes from './studentItem.module.scss';
 import Student from '../../models/student';
 
@@ -28,12 +28,28 @@ const StudentItem = (props: StudentItemProps) => {
       <span className={`${classes.studentText} ${classes.studentName}`}>
         {props.student.first_name} {props.student.last_name}
       </span>
-      <span className={`${classes.studentText} ${classes.studentEmail}`}>
-        {props.student.email}
-      </span>
-      <span className={`${classes.studentText} ${classes.studentDateStarted}`}>
-        {formatDate(props.student.date_started)}
-      </span>
+      {props.student.phone_1 ? (
+        <span className={`${classes.studentText} ${classes.studentPhone}`}>
+          <a
+            className={`btn ${classes.editButton}`}
+            href={`tel:${props.student.phone_1}`}
+            target="_blank"
+          >
+            {formatPhoneNumber(props.student.phone_1)}
+          </a>
+        </span>
+      ) : null}
+      {props.student.phone_2 ? (
+        <span className={`${classes.studentText} ${classes.studentPhone}`}>
+          <a
+            className={`btn ${classes.editButton}`}
+            href={`tel:${props.student.phone_2}`}
+            target="_blank"
+          >
+            {formatPhoneNumber(props.student.phone_2)}
+          </a>
+        </span>
+      ) : null}
       <span className={classes.spacer}></span>
       <button
         className={`btn  ${classes.studentButton} ${classes.editButton}`}
