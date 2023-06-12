@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { formatPhoneNumber } from '../../utilities/utilities';
+import { formatPhoneNumber, isValidValue } from '../../utilities/utilities';
 import Student from '../../models/student';
 import classes from './studentView.module.scss';
 import avatar from '../../assets/images/avatarIcon.png';
@@ -19,12 +19,17 @@ const StudentView = (props: StudentViewProps) => {
           />
           <h1
             className={`${
-              props.student.active ? 'text-success' : 'text-warning'
+              props.student.active ? classes.active : classes.inactive
             }`}
           >
-            {props.student.first_name} {props.student.last_name}{' '}
+            {props.student.first_name} {props.student.last_name}
           </h1>
-          <h5>Personal Information</h5>
+
+          {isValidValue(props.student.email) ||
+          isValidValue(props.student.phone_1) ||
+          isValidValue(props.student.phone_2) ? (
+            <h5>Personal Information</h5>
+          ) : null}
           {props.student.email ? <>Email: {props.student.email}</> : null}
           {props.student.phone_1 ? (
             <div>
@@ -38,10 +43,12 @@ const StudentView = (props: StudentViewProps) => {
               {formatPhoneNumber(props.student.phone_2)}
             </div>
           ) : null}
-          <h5>Student Satus</h5>
-          {props.student.financial_status ? (
-            <div>Financial Status: {props.student.financial_status}</div>
+          {isValidValue(props.student.financial_status) ||
+          isValidValue(props.student.lesson_length) ||
+          isValidValue(props.student.current_rate) ? (
+            <h5>Student Satus</h5>
           ) : null}
+
           {props.student.lesson_length ? (
             <div>Lesson Length: {props.student.lesson_length}</div>
           ) : null}
@@ -49,7 +56,10 @@ const StudentView = (props: StudentViewProps) => {
             <div>Current Rate:{props.student.current_rate}</div>
           ) : null}
 
-          <h5>Additional Information</h5>
+          {isValidValue(props.student.active_songs) ||
+          isValidValue(props.student.additional_notes) ? (
+            <h5>Additional Information</h5>
+          ) : null}
           {props.student.active_songs ? (
             <div>Ative Songs: {props.student.active_songs}</div>
           ) : null}

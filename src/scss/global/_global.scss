@@ -3,26 +3,34 @@
 @import url('https://fonts.googleapis.com/css2?family=ABeeZee&family=Mate+SC&display=swap');
 
 .editButton {
-  background-color: $blue-300;
+  background-color: $blue-300 !important;
   &:hover {
-    background-color: $blue-400;
+    background-color: $blue-400 !important;
   }
 }
 .deleteButton {
-  background-color: $red-500;
+  background-color: $red-500 !important;
   &:hover {
-    background-color: $red-400;
+    background-color: $red-400 !important;
   }
 }
 .activeButton {
-  background-color: $green-400;
+  background-color: $green-400 !important;
   &:hover {
-    background-color: $green-500;
+    background-color: $green-500 !important;
   }
 }
 .inactiveButton {
-  background-color: $yellow-300;
+  background-color: $yellow-300 !important;
   &:hover {
-    background-color: $yellow-400;
+    background-color: $yellow-400 !important;
   }
+}
+
+.active {
+  color: $green-400 !important;
+}
+
+.inactive {
+  color: $green-300 !important;
 }

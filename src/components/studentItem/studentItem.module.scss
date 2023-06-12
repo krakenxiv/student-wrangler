@@ -1,4 +1,4 @@
-@import '../../scss/global/global';
+@import '../../scss/global/_global.scss';
 
 .student {
   display: flex;
@@ -13,30 +13,6 @@
     margin-left: 10px;
     width: 100px;
   }
-  // .editButton {
-  //   background-color: $blue-300;
-  //   &:hover {
-  //     background-color: $blue-400;
-  //   }
-  // }
-  // .deleteButton {
-  //   background-color: $orange-400;
-  //   &:hover {
-  //     background-color: $orange-500;
-  //   }
-  // }
-  // .studentActive {
-  //   background-color: $green-400;
-  //   &:hover {
-  //     background-color: $green-500;
-  //   }
-  // }
-  // .studentInactive {
-  //   background-color: $yellow-300;
-  //   &:hover {
-  //     background-color: $yellow-400;
-  //   }
-  // }
   .iconButton {
     margin-right: 10px;
   }

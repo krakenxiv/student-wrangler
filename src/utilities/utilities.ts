@@ -134,3 +134,14 @@ export const formatPhoneNumber = (phoneNumber: string | undefined): string => {
   );
   return dressedNumber;
 };
+
+export const isValidValue = (valueToCheck: string | undefined): boolean => {
+  if (
+    valueToCheck !== null &&
+    valueToCheck !== '' &&
+    valueToCheck !== undefined
+  ) {
+    return true;
+  }
+  return false;
+};
