@@ -15,7 +15,7 @@ const StudentItem = (props: StudentItemProps) => {
     <div key={props.student.id} className={classes.student}>
       <button
         className={`btn ${
-          props.student.active ? 'btn-success' : 'btn-warning'
+          props.student.active ? classes.activeButton : classes.inactiveButton
         } ${classes.iconButton}`}
         data-bs-toggle="modal"
         data-bs-target="#viewStudentModal"
@@ -36,7 +36,7 @@ const StudentItem = (props: StudentItemProps) => {
       </span>
       <span className={classes.spacer}></span>
       <button
-        className={`btn btn-primary ${classes.studentButton}`}
+        className={`btn  ${classes.studentButton} ${classes.editButton}`}
         data-bs-toggle="modal"
         data-bs-target="#updateStudentModal"
         onClick={() => {
@@ -47,7 +47,7 @@ const StudentItem = (props: StudentItemProps) => {
         <i className="bi bi-pencil-fill"></i>
       </button>
       <button
-        className={`btn btn-primary ${classes.studentButton}`}
+        className={`btn  ${classes.studentButton}  ${classes.deleteButton}`}
         onClick={() => {
           props.deleteHandler();
         }}

@@ -1,3 +1,5 @@
+@import './scss/global/_global.scss';
+
 .appContainer {
   align-items: center;
   display: flex;
@@ -14,7 +16,7 @@
   align-content: center;
 
   span {
-    color: #fff;
+    color: $white;
     display: block;
     font-size: 12px;
     margin-bottom: 10px;

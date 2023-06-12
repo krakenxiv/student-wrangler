@@ -1,5 +1,13 @@
+@import '../../scss/global/_global.scss';
+
 .studentView {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: wrap;
+
+  h5 {
+    color: $blue-300;
+    margin-top: 0.5em;
+    margin-bottom: 0;
+  }
 }

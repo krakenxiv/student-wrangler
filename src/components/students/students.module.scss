@@ -1,4 +1,4 @@
-@import '../../scss/global/global';
+@import '../../scss/global/_global.scss';
 
 .loader {
   display: grid;
@@ -8,7 +8,7 @@
   align-content: center;
 
   span {
-    color: #fff;
+    color: $white;
     display: block;
     font-size: 12px;
     margin-bottom: 10px;
@@ -22,6 +22,6 @@
 }
 
 .todos {
-  color: #fff;
+  color: $white;
   margin: 10px 0;
 }

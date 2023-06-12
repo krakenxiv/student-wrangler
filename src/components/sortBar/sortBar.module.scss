@@ -1,6 +1,7 @@
-@import '../../scss/global/global';
+@import '../../scss/global/_global.scss';
+
 .sortBar {
-  background-color: #444;
+  background-color: $gray-700;
   border-radius: 10px;
   display: flex;
   flex-direction: row;
@@ -10,7 +11,7 @@
   padding: 10px 0;
 
   .selectLabel {
-    color: #fff;
+    color: $white;
   }
 
   .sortBy {

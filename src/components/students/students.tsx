@@ -61,6 +61,7 @@ const Students = (props: StudentsProps) => {
   const [previousAdditionalNotes, setPreviousAdditionalNotes] = useState<
     string | undefined
   >('');
+
   const [resetUpdateForm, setResetUpdateForm] = useState(0);
 
   const studentsList = useSelector((state: any) => {
@@ -202,7 +203,7 @@ const Students = (props: StudentsProps) => {
   }
 
   // this allows this parent component to reset the Update Student form when a user
-  // clicks the modal close from this component
+  // clicks the modal close from this component... a little clunk
   const updateStudentCloseHandler = () => {
     setResetUpdateForm(resetUpdateForm + 1);
   };
@@ -220,14 +221,7 @@ const Students = (props: StudentsProps) => {
         />
         <div className={classes.todos}>
           <b>TODOS!</b>
-          <br />
-          -Format phone numbers before database insertion and when displaying
-          <br />
-          -Fix date started display on update form
-          <br />
-          -Fix active display on update form
-          <br />
-          -Reconcile current vs active students
+          Add Photo Upload?
         </div>
         <div className={classes.studentList}>{studentsListDisplay}</div>
         <Modal

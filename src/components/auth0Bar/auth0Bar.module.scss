@@ -1,13 +1,15 @@
-.auth0Bar {
-    width: 100%;
-    align-items: center;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
+@import '../../scss/global/_global.scss';
 
-    .userInfo {
-        font-size: 11px;
-        margin-right: 10px;
-        color: #fff;
-    }
+.auth0Bar {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+
+  .userInfo {
+    font-size: 11px;
+    margin-right: 10px;
+    color: $white;
+  }
 }

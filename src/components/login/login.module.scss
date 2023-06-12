@@ -1,14 +1,16 @@
+@import '../../scss/global//_global.scss';
+
 .login {
-    display: grid;
-    justify-content: center;
-    align-content: center;
-    text-align: center;
-    height: 100vh;
-    width: 100%;
-  
-    span {
-      color: #fff;
-      display: block;
-      margin-bottom: 20px;
-    }
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  height: 100vh;
+  width: 100%;
+
+  span {
+    color: $white;
+    display: block;
+    margin-bottom: 20px;
   }
+}
