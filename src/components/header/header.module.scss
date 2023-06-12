@@ -1,5 +1,7 @@
+@import '../../scss/global/global';
+
 .header {
-  background-color: #333;
+  background-color: $gray-900;
   border-radius: 10px;
   display: flex;
   justify-content: space-around;
@@ -8,7 +10,7 @@
   width: 100%;
 
   h1 {
-    color: #fff;
+    color: $white;
     flex-grow: 1;
   }
   .addButton {

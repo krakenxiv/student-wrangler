@@ -6,7 +6,7 @@ const Header = () => {
     <header className={classes.header}>
       <h1>Student Wrangler</h1>
       <button
-        className={`btn btn-primary ${classes.addButton}`}
+        className={`btn  ${classes.editButton}`}
         data-bs-toggle="modal"
         data-bs-target="#addStudentModal"
       >

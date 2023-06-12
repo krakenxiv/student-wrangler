@@ -1,3 +1,28 @@
 @import '../bootstrap/bootstrap-specific';
 @import url('https://fonts.googleapis.com/css2?family=ABeeZee&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=ABeeZee&family=Mate+SC&display=swap');
+
+.editButton {
+  background-color: $blue-300;
+  &:hover {
+    background-color: $blue-400;
+  }
+}
+.deleteButton {
+  background-color: $red-500;
+  &:hover {
+    background-color: $red-400;
+  }
+}
+.activeButton {
+  background-color: $green-400;
+  &:hover {
+    background-color: $green-500;
+  }
+}
+.inactiveButton {
+  background-color: $yellow-300;
+  &:hover {
+    background-color: $yellow-400;
+  }
+}
