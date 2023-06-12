@@ -1,16 +1,21 @@
 @import '../../scss/global/_global.scss';
 
-.login {
+.spinner {
   display: grid;
+  width: 100%;
+  height: 100vh;
   justify-content: center;
   align-content: center;
-  text-align: center;
-  height: 100vh;
-  width: 100%;
 
   span {
     color: $white;
     display: block;
-    margin-bottom: 20px;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .innerSpinner {
+    color: $blue-300;
+    margin: auto;
   }
 }
