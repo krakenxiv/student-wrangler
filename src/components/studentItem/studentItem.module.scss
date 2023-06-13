@@ -1,43 +1,75 @@
 @import '../../scss/global/_global.scss';
 
 .student {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px;
-  width: 100%;
+  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) 44px;
+  padding: 5px;
+  gap: 5px;
 
-  .studentButton {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-left: 10px;
-    width: 100px;
-  }
-  .iconButton {
-    margin-right: 10px;
-  }
-  .studentText {
-    align-items: center;
-    flex-grow: 1;
+  .studentInfo {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    min-width: 0;
-    flex: 1;
-    line-height: 38px;
-    height: 38px;
-    vertical-align: middle;
+
+    .iconButton {
+      margin-right: 10px;
+      width: 44px;
+    }
+    .studentName {
+      font-weight: 800;
+    }
   }
-  .studentName,
-  .studentEmail,
-  .studentDateStarted,
-  .studentPhone {
-    flex-grow: 150px;
-    max-width: 150px;
+
+  .phoneNumbers {
+    display: grid;
+    gap: 5px;
+    grid-template-columns: 1fr 1fr;
+
+    .phoneButton {
+      background-color: $blue-300;
+      width: 150px;
+      padding-right: 0;
+      padding-left: 0;
+
+      &:hover {
+        background-color: $blue-400;
+      }
+    }
   }
-  .spacer {
-    flex-grow: 1;
+
+  .studentEditor {
+    .editor {
+      display: grid;
+      gap: 5px;
+      grid-template-columns: 1fr 1fr;
+      padding: 0 5px;
+
+      .studentButton {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
   }
+
+  .editorIn {
+    opacity: 1;
+    transition: opacity 0.5s;
+  }
+  .editorOut {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+  }
+}
+.showEditorButton {
+  align-items: center;
+  cursor: hand;
+  cursor: pointer;
+  display: grid;
+  justify-items: center;
+  width: 44px;
 }
 .student:nth-child(even) {
   background-color: $gray-400;
@@ -52,4 +84,77 @@
 .student:last-of-type {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+}
+
+@include media-breakpoint-up(lg) {
+  .student {
+    gap: 0;
+
+    .studentButton {
+      width: 150px;
+    }
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .student {
+    gap: 0;
+
+    .phoneNumbers {
+      margin-top: 5px;
+
+      .phoneButton {
+        font-size: 0.8em;
+        width: 100% !important;
+      }
+    }
+    .studentEditor {
+      .editor {
+        padding: 0;
+      }
+    }
+    .studentButton {
+      font-size: 0.8em;
+      margin-top: 5px;
+    }
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .student {
+    grid-template-areas:
+      'studentInfo showEditorButton'
+      'phoneNumbers phoneNumbers'
+      'studentEditor studentEditor';
+    grid-template-columns: 1fr 44px;
+
+    .studentInfo {
+      grid-area: studentInfo;
+    }
+    .phoneNumbers {
+      grid-area: phoneNumbers;
+    }
+    .studentEditor {
+      grid-area: studentEditor;
+    }
+    .showEditorButton {
+      grid-area: showEditorButton;
+    }
+    .phoneButton {
+      font-size: 0.8em;
+      max-width: 100%;
+    }
+    .editorIn {
+      height: auto;
+      opacity: 1;
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+    .editorOut {
+      height: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+  }
 }

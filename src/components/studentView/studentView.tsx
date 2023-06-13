@@ -14,6 +14,7 @@ const StudentView = (props: StudentViewProps) => {
       {props.student ? (
         <div>
           <img
+            className={classes.avatar}
             src={avatar}
             alt={`${props.student.first_name} ${props.student.last_name} Avatar`}
           />
