@@ -1,80 +1,75 @@
 @import '../../scss/global/_global.scss';
 
 .student {
+  align-items: stretch;
   display: grid;
-  // grid-template-columns: 80px 250px 160px 160px 1fr 300px 44px;
-  grid-template-areas: 'view name phone1 phone2 . editor editorButton';
-  padding: 8px;
-  width: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) 44px;
+  padding: 5px;
+  gap: 5px;
 
-  .iconButton {
-    grid-area: view;
-    margin-right: 10px;
-    width: 60px;
-  }
-  .studentName {
-    grid-area: name;
-    align-items: center;
+  .studentInfo {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    min-width: 0;
-    line-height: 38px;
-    height: 38px;
-    vertical-align: middle;
-  }
-  .phoneButton {
-    margin-left: 10px;
-    width: 160px;
-    background-color: $blue-300;
-    &:hover {
-      background-color: $blue-400;
+
+    .iconButton {
+      margin-right: 10px;
+      width: 44px;
+    }
+    .studentName {
+      font-weight: 800;
     }
   }
-  .phone1 {
-    grid-area: phone1;
-  }
-  .phone2 {
-    grid-area: phone2;
-  }
-  .studentButton {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-left: 10px;
-  }
 
-  .editButton,
-  .deleteButton {
-    width: 120px;
-  }
-
-  .editor {
-    background-color: cyan;
-    grid-area: editor;
-    width: 250px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-  }
-  .showEditor {
-    grid-area: editorButton;
-    align-items: center;
-    cursor: hand;
-    cursor: pointer;
+  .phoneNumbers {
     display: grid;
-    justify-content: center;
-    width: 44px;
+    gap: 5px;
+    grid-template-columns: 1fr 1fr;
+
+    .phoneButton {
+      background-color: $blue-300;
+      width: 150px;
+      padding-right: 0;
+      padding-left: 0;
+
+      &:hover {
+        background-color: $blue-400;
+      }
+    }
   }
-  // .editorIn {
-  //   transition: opacity 0.5s;
-  //   opacity: 1;
-  // }
-  // .editorOut {
-  //   transition: opacity 0.5s;
-  //   opacity: 0;
-  //   pointer-events: none;
-  // }
+
+  .studentEditor {
+    .editor {
+      display: grid;
+      gap: 5px;
+      grid-template-columns: 1fr 1fr;
+      padding: 0 5px;
+
+      .studentButton {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+  }
+
+  .editorIn {
+    opacity: 1;
+    transition: opacity 0.5s;
+  }
+  .editorOut {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+  }
+}
+.showEditorButton {
+  align-items: center;
+  cursor: hand;
+  cursor: pointer;
+  display: grid;
+  justify-items: center;
+  width: 44px;
 }
 .student:nth-child(even) {
   background-color: $gray-400;
@@ -91,118 +86,75 @@
   border-bottom-right-radius: 10px;
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-up(lg) {
   .student {
-    border: 4px solid red;
-    grid-template-areas:
-      'view name'
-      'phone1 phone2'
-      'editor editorButton';
-    .editor {
-      width: 100%;
-    }
-    .editButton,
-    .deleteButton {
-      width: 50%;
+    gap: 0;
+
+    .studentButton {
+      width: 150px;
     }
   }
 }
 
-// @import '../../scss/global/_global.scss';
+@include media-breakpoint-down(lg) {
+  .student {
+    gap: 0;
 
-// .student {
-//   // display: flex;
-//   // justify-content: flex-start;
-//   padding: 8px;
-//   width: 100%;
+    .phoneNumbers {
+      margin-top: 5px;
 
-//   .iconButton {
-//     margin-right: 10px;
-//   }
-//   .studentText {
-//     align-items: center;
-//     overflow: hidden;
-//     text-overflow: ellipsis;
-//     white-space: nowrap;
-//     min-width: 0;
-//     line-height: 38px;
-//     height: 38px;
-//     vertical-align: middle;
-//   }
-//   .phoneButton {
-//     margin-left: 10px;
-//     // width: 160px;
-//     // flex-grow: 160px;
-//     // min-width: 160px;
-//     background-color: $blue-300;
-//     &:hover {
-//       background-color: $blue-400;
-//     }
-//   }
-//   .studentButton {
-//     display: flex;
-//     flex-direction: row;
-//     justify-content: space-between;
-//     margin-left: 10px;
-//   }
+      .phoneButton {
+        font-size: 0.8em;
+        width: 100% !important;
+      }
+    }
+    .studentEditor {
+      .editor {
+        padding: 0;
+      }
+    }
+    .studentButton {
+      font-size: 0.8em;
+      margin-top: 5px;
+    }
+  }
+}
 
-//   .editButton,
-//   .deleteButton {
-//     // width: 120px;
-//     // flex-grow: 120px;
-//     // max-width: 120px;
-//   }
-//   .studentName {
-//     // width: 250px;
-//     // flex-grow: 250px;
-//     // max-width: 250px;
-//   }
+@include media-breakpoint-down(md) {
+  .student {
+    grid-template-areas:
+      'studentInfo showEditorButton'
+      'phoneNumbers phoneNumbers'
+      'studentEditor studentEditor';
+    grid-template-columns: 1fr 44px;
 
-//   .editor {
-//     // display: flex;
-//     // flex-direction: row;
-//     // flex-grow: 300px;
-//     // max-width: 300px;
-//   }
-//   .spacer {
-//     // flex-grow: 1;
-//   }
-//   .showEditor {
-//     align-items: center;
-//     cursor: hand;
-//     cursor: pointer;
-//     display: grid;
-//     justify-content: center;
-//     width: 44px;
-//   }
-//   .editorIn {
-//     transition: opacity 0.5s;
-//     opacity: 1;
-//   }
-//   .editorOut {
-//     transition: opacity 0.5s;
-//     opacity: 0;
-//     pointer-events: none;
-//   }
-// }
-// .student:nth-child(even) {
-//   background-color: $gray-400;
-// }
-// .student:nth-child(odd) {
-//   background-color: $gray-300;
-// }
-// .student:first-of-type {
-//   border-top-left-radius: 10px;
-//   border-top-right-radius: 10px;
-// }
-// .student:last-of-type {
-//   border-bottom-left-radius: 10px;
-//   border-bottom-right-radius: 10px;
-// }
-
-// @include media-breakpoint-down(sm) {
-//   .student {
-//     border: 4px solid red;
-//     // flex-wrap: wrap;
-//   }
-// }
+    .studentInfo {
+      grid-area: studentInfo;
+    }
+    .phoneNumbers {
+      grid-area: phoneNumbers;
+    }
+    .studentEditor {
+      grid-area: studentEditor;
+    }
+    .showEditorButton {
+      grid-area: showEditorButton;
+    }
+    .phoneButton {
+      font-size: 0.8em;
+      max-width: 100%;
+    }
+    .editorIn {
+      height: auto;
+      opacity: 1;
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+    .editorOut {
+      height: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+  }
+}
