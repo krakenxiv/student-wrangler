@@ -24,7 +24,7 @@
   .phoneNumbers {
     display: grid;
     gap: 5px;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 150px 150px;
 
     .phoneButton {
       background-color: $blue-300;
@@ -42,8 +42,9 @@
     .editor {
       display: grid;
       gap: 5px;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 150px 150px;
       padding: 0 5px;
+      justify-content: end;
 
       .studentButton {
         display: flex;
@@ -102,6 +103,7 @@
 
     .phoneNumbers {
       margin-top: 5px;
+      grid-template-columns: 1fr 1fr;
 
       .phoneButton {
         font-size: 0.8em;
@@ -110,10 +112,12 @@
     }
     .studentEditor {
       .editor {
+        grid-template-columns: 1fr 1fr;
         padding: 0;
       }
     }
     .studentButton {
+      width: 100%;
       font-size: 0.8em;
       margin-top: 5px;
     }
@@ -146,15 +150,9 @@
     }
     .editorIn {
       height: auto;
-      opacity: 1;
-      pointer-events: none;
-      transition: opacity 0.5s;
     }
     .editorOut {
       height: 0;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s;
     }
   }
 }
