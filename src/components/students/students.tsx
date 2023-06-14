@@ -170,13 +170,6 @@ const Students = (props: StudentsProps) => {
   };
 
   const sortByHandler = (e: any) => {
-    // console.log(e.target.value);
-    // if (e.target.value === 'active' && studentsList) {
-    //   sortByActive(studentsList, true);
-    //   sortByActive(studentsList, false);
-    // } else {
-    //   dispatch(updateSortOrder(e.target.value));
-    // }
     dispatch(updateSortOrder(e.target.value));
   };
 
