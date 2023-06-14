@@ -27,8 +27,8 @@ const SortBar = (props: SortBarProps) => {
             First Name
           </option>
           <option value="last_name">Last Name</option>
-          <option value="email">Email</option>
-          <option value="id">ID</option>
+          <option value="active_first_name">Active by First Name</option>
+          <option value="active_last_name">Active by Last Name</option>
         </select>
       </div>
       <div className={`${classes.orderBy}`}>
