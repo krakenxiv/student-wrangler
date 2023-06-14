@@ -150,7 +150,33 @@ const Students = (props: StudentsProps) => {
     dispatch(deleteStudent(student));
   };
 
+  const sortByActive = (arrayToSort: Student[], orderByAsc: boolean) => {
+    let sortedArray = [...arrayToSort];
+    // console.log(sortedArray);
+
+    sortedArray.sort((student1, student2) => {
+      let valueCompare1 = Number(student1.active);
+      let valueCompare2 = Number(student2.active);
+      if (orderByAsc === true) {
+        //@ts-ignore
+        return valueCompare1 - valueCompare2;
+      } else {
+        //@ts-ignore
+        return valueCompare2 - valueCompare1;
+      }
+    });
+    console.log(sortedArray);
+    return sortedArray;
+  };
+
   const sortByHandler = (e: any) => {
+    // console.log(e.target.value);
+    // if (e.target.value === 'active' && studentsList) {
+    //   sortByActive(studentsList, true);
+    //   sortByActive(studentsList, false);
+    // } else {
+    //   dispatch(updateSortOrder(e.target.value));
+    // }
     dispatch(updateSortOrder(e.target.value));
   };
 

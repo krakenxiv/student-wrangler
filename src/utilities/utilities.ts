@@ -12,8 +12,10 @@ export const arraySort = (
   orderByAsc: boolean
 ) => {
   let sortedArray = [...arrayToSort];
-  if (sortBy === 'first_name' || sortBy === 'last_name' || 'email') {
+  if (sortBy === 'first_name' || sortBy === 'last_name') {
     return sortByString(sortedArray, sortBy, orderByAsc);
+  } else if (sortBy === 'active_first_name' || sortBy === 'active_last_name') {
+    return sortByActive(sortedArray, sortBy, orderByAsc);
   } else {
     return sortNumerically(sortedArray, sortBy, orderByAsc);
   }
@@ -32,14 +34,6 @@ const sortByString = (
       valueCompare1 = student1.last_name.toLowerCase();
       valueCompare2 = student2.last_name.toLowerCase();
     }
-    if (sortBy === 'email') {
-      let updatedEmail1 = student1.email ? student1.email : '';
-      let updatedEmail2 = student2.email ? student2.email : '';
-      if (student1.email && student2.email) {
-        valueCompare1 = updatedEmail1.toLowerCase();
-        valueCompare2 = updatedEmail2.toLowerCase();
-      }
-    }
     if (valueCompare1 < valueCompare2) {
       return orderByAsc ? -1 : 1;
     }
@@ -47,6 +41,37 @@ const sortByString = (
       return orderByAsc ? 1 : -1;
     }
     return 0;
+  });
+  return sortedArray;
+};
+
+const sortByActive = (
+  arrayToSort: Student[],
+  sortBy: string,
+  orderByAsc: boolean
+) => {
+  let sortedArray = [...arrayToSort];
+
+  sortedArray.sort((student1, student2) => {
+    let valueCompare1 = Number(student1.active);
+    let valueCompare2 = Number(student2.active);
+    let valueCompare3 = student1.first_name.toLowerCase();
+    let valueCompare4 = student2.first_name.toLowerCase();
+    if (sortBy === 'active_last_name') {
+      valueCompare3 = student1.last_name.toLowerCase();
+      valueCompare4 = student2.last_name.toLowerCase();
+    }
+    if (orderByAsc === true) {
+      return (
+        valueCompare2 - valueCompare1 ||
+        valueCompare3.localeCompare(valueCompare4)
+      );
+    } else {
+      return (
+        valueCompare1 - valueCompare2 ||
+        valueCompare3.localeCompare(valueCompare4)
+      );
+    }
   });
   return sortedArray;
 };
