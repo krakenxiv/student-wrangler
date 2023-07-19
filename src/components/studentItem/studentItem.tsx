@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { formatPhoneNumber } from '../../utilities/utilities';
 import classes from './studentItem.module.scss';
 import Student from '../../models/student';
@@ -102,4 +102,4 @@ const StudentItem = (props: StudentItemProps) => {
   );
 };
 
-export default StudentItem;
+export default memo(StudentItem);

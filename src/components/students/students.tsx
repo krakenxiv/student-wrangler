@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
 import { stripPhoneNumber } from '../../utilities/utilities';
@@ -307,4 +307,4 @@ const Students = (props: StudentsProps) => {
   );
 };
 
-export default Students;
+export default memo(Students);

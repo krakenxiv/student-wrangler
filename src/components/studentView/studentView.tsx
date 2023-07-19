@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, memo } from 'react';
 import { formatPhoneNumber, isValidValue } from '../../utilities/utilities';
 import Student from '../../models/student';
 import classes from './studentView.module.scss';
@@ -73,4 +73,4 @@ const StudentView = (props: StudentViewProps) => {
   );
 };
 
-export default StudentView;
+export default memo(StudentView);
